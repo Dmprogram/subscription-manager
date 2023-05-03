@@ -1,0 +1,30 @@
+.container {
+  width: 100%;
+  border-radius: 10px;
+  background-color: #ffffff;
+  margin: 5px 0 20px;
+  border-radius: 10px;
+  border: 2px solid rgb(226, 224, 224);
+  transition: 0.5s border-color;
+}
+
+.container:hover {
+  border: 2px solid #706c6c;
+}
+
+.container:focus-within {
+  background-color: rgb(229, 230, 232);
+  border: 2px solid rgb(14, 108, 156);
+}
+
+.datePicker {
+  width: 100%;
+}
+
+.datePicker fieldset {
+  border: none;
+}
+
+.datePicker p {
+  border-top: 1px solid red;
+}

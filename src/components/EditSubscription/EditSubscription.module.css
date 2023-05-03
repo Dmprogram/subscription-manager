@@ -1,0 +1,100 @@
+.container {
+  margin: 0 auto 40px;
+  width: 50%;
+  background-color: #2b2c2e;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  border-radius: 20px;
+}
+
+.header {
+  margin: 0;
+  margin-top: 40px;
+}
+
+.form {
+  margin-top: 30px;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  margin: 5px 0 20px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid rgb(226, 224, 224);
+  transition: 0.5s border-color;
+}
+
+.input:hover {
+  border: 2px solid #706c6c;
+}
+
+.input:focus {
+  background-color: rgb(229, 230, 232);
+  border: 2px solid rgb(14, 108, 156);
+  outline: none;
+}
+.input::-webkit-input-placeholder {
+  color: #c8c8c8;
+}
+.input:-moz-placeholder {
+  color: #c8c8c8;
+}
+.input::-moz-placeholder {
+  color: #c8c8c8;
+}
+.input:-ms-input-placeholder {
+  color: #c8c8c8;
+}
+.inputSubmit {
+  width: 100%;
+  background-color: #1159be;
+  border: none;
+  padding: 15px 0;
+  border-radius: 10px;
+  color: #f9f5f5;
+}
+
+.inputSubmit:hover {
+  cursor: pointer;
+  background-color: #093169;
+}
+
+.inputSubmitLink {
+  width: 100%;
+  margin: 10px 0 20px;
+}
+
+.deleteSubsciptionLink {
+  width: 100%;
+  text-decoration: none;
+}
+
+.deleteSubscription {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b03333;
+  width: 100%;
+  padding: 15px 0;
+  border-radius: 10px;
+  color: #ffffff;
+  margin-bottom: 40px;
+}
+
+.deleteSubscription:hover {
+  background-color: rgb(137, 27, 27);
+}
+
+.cancel {
+  width: 15px;
+  width: 15px;
+  margin-right: 5px;
+}

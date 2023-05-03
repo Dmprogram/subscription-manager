@@ -1,0 +1,47 @@
+.payments {
+  margin: 0 auto 40px;
+  width: 50%;
+}
+
+.paymentsTitle {
+  font-size: 1.5rem;
+}
+
+.payment {
+  margin-top: 15px;
+  padding: 15px 30px;
+  background-color: #2b2c2e;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paymentsTitle {
+  margin: 0;
+}
+
+.paymentTitle {
+  display: flex;
+  align-items: center;
+}
+
+.applicationIcon,
+.dateIcon,
+.moneyIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.paymentDate {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.paymentValue {
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+}
