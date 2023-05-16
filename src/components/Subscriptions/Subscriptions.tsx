@@ -1,9 +1,18 @@
 import classes from './Subscriptions.module.css';
 import { Link } from 'react-router-dom';
-import applicationIcon from '../../assets/applicationIcon.png';
-import calendar from '../../assets/calendar.png';
-import money from '../../assets/money.png';
+import { SubscriptionItem } from '../SubscriptionsItem/SubscriptionItem';
+import { useEffect } from 'react';
+import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
+import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks';
+import { Spinner } from '../Spinner/Spinner';
 export const Subscriptions = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchSubscriptionsList());
+  }, []);
+  const { subscriptions, loading, error } = useAppSelector((state) => state.subscriptionsList);
+  if (loading === 'pending') return <Spinner />;
   return (
     <section className={classes.payments}>
       <header className={classes.header}>
@@ -12,63 +21,9 @@ export const Subscriptions = () => {
           Add new subscription
         </Link>
       </header>
-      <div className={classes.payment}>
-        <div>
-          <div className={classes.paymentTitle}>
-            <img src={applicationIcon} alt='icon' className={classes.applicationIcon} />
-            <span>Yandex</span>
-          </div>
-          <div className={classes.paymentDate}>
-            <img src={calendar} alt='date' className={classes.dateIcon} />
-            <span>Payment date - 22 May 2023</span>
-          </div>
-          <div className={classes.paymentValue}>
-            <img src={money} alt='money' className={classes.moneyIcon} />
-            <span>123 Р</span>
-          </div>
-        </div>
-        <Link to='/edit-subscription' className={classes.link}>
-          <div className={classes.paymentManage}>Edit & Details</div>
-        </Link>
-      </div>
-      <div className={classes.payment}>
-        <div>
-          <div className={classes.paymentTitle}>
-            <img src={applicationIcon} alt='icon' className={classes.applicationIcon} />
-            <span>Yandex</span>
-          </div>
-          <div className={classes.paymentDate}>
-            <img src={calendar} alt='date' className={classes.dateIcon} />
-            <span>Payment date - 22 May 2023</span>
-          </div>
-          <div className={classes.paymentValue}>
-            <img src={money} alt='money' className={classes.moneyIcon} />
-            <span>123 Р</span>
-          </div>
-        </div>
-        <Link to='/edit-subscription' className={classes.link}>
-          <div className={classes.paymentManage}>Edit & Details</div>
-        </Link>
-      </div>
-      <div className={classes.payment}>
-        <div>
-          <div className={classes.paymentTitle}>
-            <img src={applicationIcon} alt='icon' className={classes.applicationIcon} />
-            <span>Yandex</span>
-          </div>
-          <div className={classes.paymentDate}>
-            <img src={calendar} alt='date' className={classes.dateIcon} />
-            <span>Payment date - 22 May 2023</span>
-          </div>
-          <div className={classes.paymentValue}>
-            <img src={money} alt='money' className={classes.moneyIcon} />
-            <span>123 Р</span>
-          </div>
-        </div>
-        <Link to='/edit-subscription' className={classes.link}>
-          <div className={classes.paymentManage}>Edit & Details</div>
-        </Link>
-      </div>
+      {subscriptions.map((subscription) => (
+        <SubscriptionItem key={subscription.id} {...subscription} />
+      ))}
     </section>
   );
 };

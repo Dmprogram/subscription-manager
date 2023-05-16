@@ -1,5 +1,5 @@
 .payments {
-  margin: 0 auto 40px;
+  margin: 40px auto;
   width: 50%;
 }
 
@@ -7,6 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 25px;
 }
 
 .paymentsTitle {
@@ -14,7 +15,7 @@
 }
 
 .link {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: #979292;
   text-decoration: none;
   padding-bottom: 2px;
@@ -22,40 +23,6 @@
 }
 
 .link:hover {
-  color: #dcdcdc;
+  color: #c0cb3f;
   border-bottom: 1px solid #dcdcdc;
-}
-
-.payment {
-  margin-top: 15px;
-  padding: 15px 30px;
-  background-color: #2b2c2e;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.paymentsTitle {
-  margin: 0;
-}
-
-.paymentTitle {
-  display: flex;
-  align-items: center;
-}
-
-.applicationIcon,
-.dateIcon,
-.moneyIcon {
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-}
-
-.paymentDate,
-.paymentValue {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
 }

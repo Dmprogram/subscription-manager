@@ -1,11 +1,7 @@
 .container {
-  margin: 20px 0 40px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
-}
-
-.links {
-  display: flex;
 }
 
 .link {

@@ -1,59 +1,23 @@
 import classes from './UpcomingPayments.module.css';
-import applicationIcon from '../../assets/applicationIcon.png';
-import calendar from '../../assets/calendar.png';
-import money from '../../assets/money.png';
+import { UpcomingPaymentsItem } from '../UpcomingPaymentsItem/UpcomingPaymentsItem';
+import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks';
+import { useEffect } from 'react';
+import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
+import { Spinner } from '../Spinner/Spinner';
 export const UpcomingPayments = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchSubscriptionsList());
+  }, []);
+  const { subscriptions, loading, error } = useAppSelector((state) => state.subscriptionsList);
+  if (loading === 'pending') return <Spinner />;
   return (
     <section className={classes.payments}>
       <h3 className={classes.paymentsTitle}>UPCOMING PAYMENTS</h3>
-      <div className={classes.payment}>
-        <div>
-          <div className={classes.paymentTitle}>
-            <img src={applicationIcon} alt='icon' className={classes.applicationIcon} />
-            <span>Yandex</span>
-          </div>
-          <div className={classes.paymentDate}>
-            <img src={calendar} alt='date' className={classes.dateIcon} />
-            <span>Payment date - 22 May 2023</span>
-          </div>
-        </div>
-        <div className={classes.paymentValue}>
-          <img src={money} alt='money' className={classes.moneyIcon} />
-          123 Р
-        </div>
-      </div>
-      <div className={classes.payment}>
-        <div>
-          <div className={classes.paymentTitle}>
-            <img src={applicationIcon} alt='icon' className={classes.applicationIcon} />
-            <span>Yandex</span>
-          </div>
-          <div className={classes.paymentDate}>
-            <img src={calendar} alt='date' className={classes.dateIcon} />
-            <span>Payment date - 22 May 2023</span>
-          </div>
-        </div>
-        <div className={classes.paymentValue}>
-          <img src={money} alt='money' className={classes.moneyIcon} />
-          123 Р
-        </div>
-      </div>
-      <div className={classes.payment}>
-        <div>
-          <div className={classes.paymentTitle}>
-            <img src={applicationIcon} alt='icon' className={classes.applicationIcon} />
-            <span>Yandex</span>
-          </div>
-          <div className={classes.paymentDate}>
-            <img src={calendar} alt='date' className={classes.dateIcon} />
-            <span>Payment date - 22 May 2023</span>
-          </div>
-        </div>
-        <div className={classes.paymentValue}>
-          <img src={money} alt='money' className={classes.moneyIcon} />
-          123 Р
-        </div>
-      </div>
+      {subscriptions.map((subscription) => (
+        <UpcomingPaymentsItem key={subscription.id} {...subscription} />
+      ))}
     </section>
   );
 };

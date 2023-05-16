@@ -1,4 +1,6 @@
 import { useState, useMemo } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
+import { addSubDate } from '../store/subscriptionSlice';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -11,9 +13,19 @@ const today = dayjs();
 const todayStartOfTheDay = today.startOf('day');
 const maxDate = dayjs().add(366, 'day');
 
+const formatDate = (dayjs: Dayjs | null) => {
+  return !!dayjs
+    ? {
+        day: dayjs.$D,
+        month: dayjs.$M + 1,
+        year: dayjs.$y,
+      }
+    : null;
+};
 export const DatePick = () => {
+  const dispatch = useAppDispatch();
+  const date = useAppSelector((state) => state.subscription.subscription.date);
   const [error, setError] = useState<DateValidationError | null>(null);
-
   const errorMessage = useMemo(() => {
     switch (error) {
       case 'maxDate':
@@ -31,7 +43,6 @@ export const DatePick = () => {
     }
   }, [error]);
 
-  const [value, setValue] = useState<Dayjs | null>(null);
   return (
     <div className={classes.container}>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
@@ -39,8 +50,8 @@ export const DatePick = () => {
           className={classes.datePicker}
           onError={(newError) => setError(newError)}
           formatDensity='spacious'
-          value={value}
-          onChange={(newValue) => setValue(newValue)}
+          value={date && dayjs(`${date.year}-${date.month}-${date.day}`)}
+          onChange={(value) => dispatch(addSubDate({ date: formatDate(value) }))}
           orientation='portrait'
           slotProps={{
             textField: {
