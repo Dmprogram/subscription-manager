@@ -1,13 +1,11 @@
 .container {
   margin: 60px auto 40px;
-  width: 50%;
-  background-color: #2b2c2e;
+  max-width: 628px;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
   flex-direction: column;
-  border-radius: 20px;
-  padding: 40px 20px;
+  padding: 0 20px;
 }
 
 .header {
@@ -17,12 +15,21 @@
 .description {
   margin-top: 3px;
   color: #9b9a9a;
-  font-size: 1rem;
+  margin-bottom: 30px;
 }
 
 .form {
-  margin-top: 30px;
-  width: 60%;
+  background-color: #2b2c2e;
+  border-radius: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.formContent {
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;

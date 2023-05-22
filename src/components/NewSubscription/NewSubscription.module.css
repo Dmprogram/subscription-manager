@@ -1,6 +1,6 @@
 .container {
   margin: 40px auto;
-  width: 50%;
+  max-width: 628px;
   background-color: #2b2c2e;
   display: flex;
   align-items: center;
@@ -16,16 +16,24 @@
 
 .form {
   margin-top: 30px;
-  width: 60%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 .input {
   width: 100%;
   height: 40px;
-  margin: 5px 0 20px;
+  margin: 5px 0;
   padding: 10px;
   border-radius: 10px;
   border: 2px solid rgb(226, 224, 224);
@@ -53,7 +61,86 @@
 .input:-ms-input-placeholder {
   color: #c8c8c8;
 }
-.inputSubmit {
+
+.upload {
+  width: 100%;
+  display: flex;
+  margin-bottom: 40px;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.activeUpload {
+  width: 60%;
+  height: 40px;
+  background-color: #419152;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.activeUpload:hover {
+  background-color: #1c6f16;
+}
+
+.inActiveUpload {
+  width: 60%;
+  height: 40px;
+  background-color: #4d4747;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: not-allowed;
+  border-radius: 10px;
+}
+
+.inputImage {
+  z-index: -1;
+  opacity: 0;
+  display: block;
+  width: 0;
+  height: 0;
+}
+
+.text {
+  text-align: center;
+  width: 100%;
+}
+
+.buttonUpload {
+  color: #f9f5f5;
+  width: 30%;
+  height: 40px;
+  background-color: #1e6fe1;
+  border-radius: 10px;
+  border: none;
+}
+
+.buttonUpload:hover {
+  background-color: #1654ab;
+}
+
+.buttonUpload:disabled {
+  background-color: #4d4747;
+  cursor: not-allowed;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+
+.buttonSubmit {
   width: 100%;
   background-color: #1159be;
   border: none;
@@ -62,12 +149,56 @@
   color: #f9f5f5;
 }
 
-.inputSubmit:hover {
+.buttonSubmit:hover {
   cursor: pointer;
   background-color: #093169;
 }
 
-.inputSubmitLink {
-  margin: 10px 0 40px;
+.error {
+  margin: 0;
+  color: rgb(223, 33, 33);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.clearButton {
   width: 100%;
+  margin: 20px 0 40px;
+  background-color: #757474;
+  border: none;
+  padding: 15px 0;
+  border-radius: 10px;
+  color: #f9f5f5;
+}
+
+.clearButton:hover {
+  cursor: pointer;
+  background-color: #585757;
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  margin-left: 5px;
+  width: 15px;
+  height: 15px;
+  border: 3px solid #d5c818;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

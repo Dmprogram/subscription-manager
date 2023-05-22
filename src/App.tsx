@@ -4,9 +4,10 @@ import classes from './App.module.css';
 import { SignInPage } from './components/Pages/SignInPage';
 import { SignUppage } from './components/Pages/SignUpPage';
 import { MainPage } from './components/Pages/MainPage';
-import { SubscriptionsPage } from './components/Pages/SubscriptionsPage';
+import { ActiveSubscriptionsPage } from './components/Pages/ActiveSubscriptionsPage';
 import { NewSubscriptionPage } from './components/Pages/NewSubscriptionPage';
 import { EditSubscriptionPage } from './components/Pages/EditSubscriptionPage';
+import { InactiveSubscriptionsPage } from './components/Pages/InactiveSubscriptionsPage';
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
 import { Navigate } from 'react-router-dom';
 
@@ -19,7 +20,8 @@ const App = () => {
           <Route path='/registration' element={<SignUppage />} />
           <Route element={<ProtectedRoute />}>
             <Route path='/' element={<MainPage />} />
-            <Route path='/subscriptions' element={<SubscriptionsPage />} />
+            <Route path='/active-subscriptions' element={<ActiveSubscriptionsPage />} />
+            <Route path='/inactive-subscriptions' element={<InactiveSubscriptionsPage />} />
             <Route path='/new-subscription' element={<NewSubscriptionPage />} />
             <Route path='/edit-subscription/:subscriptionId' element={<EditSubscriptionPage />} />
             <Route path='*' element={<Navigate to='/' replace />} />

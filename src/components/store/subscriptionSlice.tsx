@@ -21,7 +21,7 @@ const initialState: SubscriptionState = {
     name: '',
     price: '',
     currency: '',
-    paymentFrequency: 'month',
+    paymentFrequency: '',
     date: null,
     id: '',
   },
@@ -65,7 +65,7 @@ export const subscriptionSlice = createSlice({
         name: '',
         price: '',
         currency: '',
-        paymentFrequency: 'month',
+        paymentFrequency: '',
         date: null,
         id: '',
       };

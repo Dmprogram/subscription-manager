@@ -1,6 +1,6 @@
 .payments {
   margin: 40px auto;
-  width: 50%;
+  max-width: 1000px;
 }
 
 .paymentsTitle {

@@ -3,7 +3,7 @@ import subscriptionSlice from './subscriptionSlice';
 import subscriptionsListSlice from './subscriptionsListSlice';
 export const store = configureStore({
   reducer: {
-    subscription: subscriptionSlice,
+    // subscription: subscriptionSlice,
     subscriptionsList: subscriptionsListSlice,
   },
 });
