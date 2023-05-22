@@ -1,0 +1,83 @@
+.payment {
+  margin-top: 15px;
+  padding: 15px 30px;
+  background-color: #2b2c2e;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paymentTitle {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.applicationIcon,
+.dateIcon,
+.moneyIcon,
+.imageIcon,
+.editIcon,
+.imageContainer {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.paymentDate,
+.paymentValue {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.paymentManage {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.editContainer {
+  display: flex;
+  align-items: center;
+}
+
+.switch {
+  margin-top: 15px;
+}
+
+.link {
+  font-size: 1.2rem;
+  color: #979292;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #979292;
+}
+
+.link:hover {
+  color: #dcdcdc;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.loader {
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #d5c818;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

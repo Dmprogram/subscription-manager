@@ -1,6 +1,6 @@
 .header {
-  height: 200px;
-  width: 50%;
+  height: 250px;
+  max-width: 1000px;
   background: linear-gradient(
     90deg,
     rgba(31, 110, 75, 1) 0%,
@@ -17,22 +17,24 @@
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .footer {
+  height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .money {
-  font-size: 2rem;
+  font-size: 1.8rem;
+  margin: 5px 0;
 }
 
 .link {
   padding: 15px;
-  background-color: #424443fc;
+  background-color: #505051;
   border-radius: 20px;
   display: flex;
   flex-wrap: nowrap;
@@ -43,7 +45,7 @@
 }
 
 .link:hover {
-  background-color: rgb(54, 53, 53);
+  background-color: rgb(57, 57, 57);
 }
 
 .arrowRight {

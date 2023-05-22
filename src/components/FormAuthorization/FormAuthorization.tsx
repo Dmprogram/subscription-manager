@@ -11,7 +11,7 @@ export const Form: FC<FormProps> = ({ submitTitle, handleClick }) => {
   const [password, setPassword] = useState<string>('');
 
   return (
-    <form className={classes.form} onSubmit={(ev) => handleClick(ev, email, password)}>
+    <form onSubmit={(ev) => handleClick(ev, email, password)}>
       <label htmlFor='email'>Email</label>
       <input
         className={classes.input}

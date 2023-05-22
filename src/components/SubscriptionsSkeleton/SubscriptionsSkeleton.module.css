@@ -1,0 +1,16 @@
+.containerBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftContent {
+  width: 200px;
+}
+
+.rightContent {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}

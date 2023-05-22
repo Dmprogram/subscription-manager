@@ -1,0 +1,42 @@
+.payments {
+  margin: 40px auto;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  align-self: center;
+  font-size: 1.4rem;
+}
+
+.paymentsTitle {
+  color: #e6e3e3;
+  display: flex;
+  margin: 20px 0 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.results {
+  font-size: 1.4rem;
+}
+
+.link {
+  font-size: 1.4rem;
+  color: #979292;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #979292;
+}
+
+.link:hover {
+  color: #c0cb3f;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.subscriptionNotFound {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  color: #d4e511;
+}

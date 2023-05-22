@@ -1,6 +1,6 @@
 .searchField {
   margin: 40px auto 0;
-  width: 50%;
+  max-width: 1000px;
 }
 
 .inputField {
@@ -15,8 +15,11 @@
   align-items: center;
 }
 
+.inputField:focus-within {
+  border: 3px solid #0e0ee3;
+}
 .inputField:hover {
-  border: 3px solid #84848b;
+  border: 3px solid #0e0ee3;
 }
 
 .searchIcon,
