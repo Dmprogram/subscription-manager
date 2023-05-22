@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { getSubscriptions } from '../services/requestSubscriptions';
-import { SubscriptionState } from './subscriptionSlice';
 import { countAverageExpenses } from '../utils/countAverageExpenses';
 import { sortPaymentsToOldest } from '../utils/sortPaymentsToOldest';
 import { sortByParameter } from '../utils/sortByParameter';
@@ -10,6 +9,21 @@ export const fetchSubscriptionsList = createAsyncThunk(
   'users/fetchSubscriptionsList',
   getSubscriptions
 );
+
+interface SubscriptionState {
+  subscription: {
+    name: string;
+    price: string;
+    currency: string;
+    paymentFrequency: string;
+    id: string;
+    date: {
+      day: number | null;
+      month: number | null;
+      year: number | null;
+    } | null;
+  };
+}
 
 interface SubscriptionsListState {
   fetchedSubscriptions: Array<SubscriptionState>;

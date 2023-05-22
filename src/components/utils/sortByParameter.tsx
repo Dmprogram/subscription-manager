@@ -69,32 +69,3 @@ export const sortByParameter = (fetchedSubscriptions, parameter) => {
       return sortPaymentsToA(fetchedSubscriptions);
   }
 };
-
-// import { Account } from '../types';
-// const products = {
-//   debit: 1,
-//   credit: 2,
-//   external: 3,
-//   saving: 4,
-//   loan: 5,
-// };
-// const currency = {
-//   RUB: 1,
-//   USD: 2,
-//   EUR: 3,
-//   GBP: 4,
-// };
-
-// export const sortAccounts = (accounts: Array<Account>): Array<Account> => {
-//   return [...accounts].sort((a, b) => {
-//     const sortByProducts =
-//       products[a.type as keyof typeof products] - products[b.type as keyof typeof products];
-//     if (sortByProducts === 0 && !!a.currency && !!b.currency) {
-//       return (
-//         currency[a.currency as keyof typeof currency] -
-//         currency[b.currency as keyof typeof currency]
-//       );
-//     }
-//     return sortByProducts;
-//   });
-// };
