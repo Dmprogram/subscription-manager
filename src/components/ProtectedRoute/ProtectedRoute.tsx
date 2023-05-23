@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { auth } from '../../firebase';
 import { Spinner } from '../Spinner/Spinner';
 import classes from './ProtectedRoute.module.css';
+
 export const ProtectedRoute = () => {
   const [loading, setLoading] = useState(true);
   const [authState, setAuthState] = useState(false);
@@ -20,7 +21,6 @@ export const ProtectedRoute = () => {
         setLoading(false);
       }
     });
-
     return () => {
       subscribe();
     };

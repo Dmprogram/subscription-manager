@@ -2,13 +2,8 @@ import classes from './NavigationBar.module.css';
 import { NavLink } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
-import { clearState } from '../store/subscriptionsListSlice';
 
 export const NavigationBar = () => {
-  const dispatch = useAppDispatch;
-  const state = useAppSelector((state) => state);
-
   return (
     <nav className={classes.container}>
       <NavLink to='/' className={({ isActive }) => (isActive ? classes.linkActive : classes.link)}>
@@ -35,8 +30,11 @@ export const NavigationBar = () => {
 
       <NavLink
         onClick={() => {
-          dispatch(clearState(state));
-          signOut(auth);
+          signOut(auth)
+            .then(() => {})
+            .catch((error) => {
+              console.log(error);
+            });
         }}
         to='/login'
         className={classes.link}
