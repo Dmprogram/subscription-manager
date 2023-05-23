@@ -22,6 +22,8 @@ interface SubscriptionState {
       month: number | null;
       year: number | null;
     } | null;
+    status: string;
+    imageUrl: string;
   };
 }
 
