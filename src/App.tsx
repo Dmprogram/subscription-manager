@@ -26,6 +26,7 @@ const App = () => {
             <Route path='/edit-subscription/:subscriptionId' element={<EditSubscriptionPage />} />
             <Route path='*' element={<Navigate to='/' replace />} />
           </Route>
+          <Route path='*' element={<Navigate to='/login' replace />} />
         </Routes>
       </BrowserRouter>
     </div>
