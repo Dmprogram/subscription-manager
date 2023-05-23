@@ -82,8 +82,12 @@ const subscriptionsListSlice = createSlice({
       state.inputSearch = '';
     },
 
-    clearState(state) {
-      state = initialState;
+    clearAverageExpenses(state) {
+      state.averageExpenses = {
+        averageExpensesRub: null,
+        averageExpensesUsd: null,
+        averageExpensesEur: null,
+      };
     },
 
     addSortByParameter(state, action: PayloadAction<{ sortByParameter: string | null }>) {
@@ -140,6 +144,6 @@ export const {
   clearSearchAndSortFields,
   addSortByParameter,
   changeStatus,
-  clearState,
+  clearAverageExpenses,
 } = subscriptionsListSlice.actions;
 export default subscriptionsListSlice.reducer;

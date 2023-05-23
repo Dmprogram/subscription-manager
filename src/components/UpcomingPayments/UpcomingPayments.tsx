@@ -4,10 +4,14 @@ import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks';
 import { useEffect } from 'react';
 import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
 import { UpcomingPaymentsSkeleton } from '../UpcomingPaymentsSkeleton/UpcomingPaymentsSkeleton';
+import { clearAverageExpenses } from '../store/subscriptionsListSlice';
 export const UpcomingPayments = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchSubscriptionsList());
+    return () => {
+      dispatch(clearAverageExpenses());
+    };
   }, []);
   const { upcomingPayments, loading, error } = useAppSelector((state) => state.subscriptionsList);
   if (loading === 'pending')
