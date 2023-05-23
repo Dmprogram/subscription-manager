@@ -1,17 +1,23 @@
 import classes from './ActiveSubscriptions.module.css';
 import { Link } from 'react-router-dom';
-import { ActiveSubscriptionItem } from '../ActiveSubscriptionsItem/ActiveSubscriptionItem';
+import { SubscriptionItem } from '../SubscriptionItem/SubscriptionItem';
 import { useEffect } from 'react';
 import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
 import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks';
 import { SubscriptionsSkeleton } from '../SubscriptionsSkeleton/SubscriptionsSkeleton';
 import { SelectSortType } from '../SelectSortType/SelectSortType';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 export const ActiveSubscriptions = () => {
   const dispatch = useAppDispatch();
   const { activeSubscriptions, loading, error, inputSearch, searchSubsciptions } = useAppSelector(
     (state) => state.subscriptionsList
   );
+  const [parent] = useAutoAnimate({
+    duration: 300,
+    easing: 'ease-in-out',
+    disrespectUserMotionPreference: false,
+  });
 
   useEffect(() => {
     dispatch(fetchSubscriptionsList());
@@ -39,7 +45,7 @@ export const ActiveSubscriptions = () => {
       {searchSubsciptions.length > 0 ? (
         <div>
           {searchSubsciptions.map((subscription) => (
-            <ActiveSubscriptionItem key={subscription.id} {...subscription} />
+            <SubscriptionItem key={subscription.id} {...subscription} />
           ))}
         </div>
       ) : (
@@ -65,9 +71,11 @@ export const ActiveSubscriptions = () => {
           </div>
         ) : null}
       </div>
-      {activeSubscriptions.map((subscription) => (
-        <ActiveSubscriptionItem key={subscription.id} {...subscription} />
-      ))}
+      <div ref={parent}>
+        {activeSubscriptions.map((subscription) => (
+          <SubscriptionItem key={subscription.id} {...subscription} />
+        ))}
+      </div>
     </section>
   );
 };

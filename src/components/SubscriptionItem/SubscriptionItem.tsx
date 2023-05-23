@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import classes from './ActiveSubscriptionItem.module.css';
+import classes from './SubscriptionItem.module.css';
 import applicationIcon from '../../assets/applicationIcon.png';
 import calendar from '../../assets/calendar.png';
 import money from '../../assets/money.png';
@@ -9,7 +9,7 @@ import { formatDate } from '../utils/formatDate';
 import { useState } from 'react';
 import { SwitchSubscriptionStatus } from '../SwitchSubscriptionStatus/SwitchSubscriptionStatus';
 
-export const ActiveSubscriptionItem = (props) => {
+export const SubscriptionItem = (props) => {
   const [isLoadedImage, setIsLoadedImage] = useState(false);
 
   const onLoad = () => {
@@ -20,10 +20,10 @@ export const ActiveSubscriptionItem = (props) => {
   const formatFrequency =
     paymentFrequency === 'once a year' ? 'annually' : 'once a month' ? 'monthly' : '';
   const { year, month, day } = date;
-
+  const opacity = status ? classes.activePayment : classes.inActivePayment;
   const { formatDay, formatMonth } = formatDate(year, month, day);
   return (
-    <div className={classes.payment}>
+    <div className={opacity}>
       <div>
         <div className={classes.paymentTitle}>
           {imageUrl ? (

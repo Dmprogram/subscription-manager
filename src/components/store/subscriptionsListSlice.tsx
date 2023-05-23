@@ -69,6 +69,11 @@ const subscriptionsListSlice = createSlice({
       subscription.status = action.payload.status;
       state.activeSubscriptions = state.fetchedSubscriptions.filter((el) => el.status);
       state.inactiveSubscriptions = state.fetchedSubscriptions.filter((el) => !el.status);
+      state.searchSubsciptions.forEach((el, index) => {
+        if (el.id === subscription.id) {
+          state.searchSubsciptions[index] = subscription;
+        }
+      });
     },
 
     clearSearchAndSortFields(state) {

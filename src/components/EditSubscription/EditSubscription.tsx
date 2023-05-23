@@ -69,14 +69,15 @@ export const EditSubscription = () => {
       setProgress('Image is missing');
       setImageUrl(null);
       return;
-    } else if (!validTypes.includes(file.type.split('/')[1])) {
-      setDisabledImageIChanges(false);
-      setDisabledSubmit(false);
-      setProgress('Invalid format');
-      setFile(null);
-      setImageUrl(null);
-      return;
     }
+    // else if (!validTypes.includes(file.type.split('/')[1])) {
+    //   setDisabledImageIChanges(false);
+    //   setDisabledSubmit(false);
+    //   setProgress('Invalid format');
+    //   setFile(null);
+    //   setImageUrl(null);
+    //   return;
+    // }
     const storageRef = ref(storage, `images/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -121,7 +122,7 @@ export const EditSubscription = () => {
         setSubscriptionDelete(true);
         setTimeout(() => {
           navigate('/active-subscriptions');
-        }, 1000);
+        }, 1500);
       } catch (e) {
         console.error('Error delete subscription: ', e);
       }
@@ -155,7 +156,7 @@ export const EditSubscription = () => {
       setSubscriptionEdit(true);
       setTimeout(() => {
         navigate('/active-subscriptions');
-      }, 1000);
+      }, 1500);
     }
   };
 

@@ -6,7 +6,8 @@ import { useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
 import { db, auth } from '../../firebase';
 import { changeStatus } from '../store/subscriptionsListSlice';
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
+import { useAppDispatch } from '../../hooks/ReduxHooks';
+import classes from './SwitchSubscriptionStatus.module.css';
 export const SwitchSubscriptionStatus = ({ id, status }) => {
   const dispatch = useAppDispatch();
   const [checked, setChecked] = useState(status);
@@ -36,11 +37,17 @@ export const SwitchSubscriptionStatus = ({ id, status }) => {
   return (
     <FormGroup>
       <Stack direction='row' spacing={0} alignItems='center'>
-        <Typography sx={{ color: 'white' }}>{!loading && !checked && 'Inactive'}</Typography>
+        <div>{!loading && !checked && 'Inactive'}</div>
         <Switch checked={checked} onChange={handleChange} />
-        <Typography sx={{ color: 'white' }}>
-          {loading ? <span style={{ color: '#f7ef16' }}>Please wait</span> : checked && 'Active'}
-        </Typography>
+        <div>
+          {loading ? (
+            <div>
+              <div className={classes.loader}></div>
+            </div>
+          ) : (
+            checked && 'Active'
+          )}
+        </div>
       </Stack>
     </FormGroup>
   );

@@ -5,10 +5,13 @@ import { useAppDispatch } from '../../hooks/ReduxHooks';
 import { useAppSelector } from '../../hooks/ReduxHooks';
 import { findSubscription, clearSearchAndSortFields } from '../store/subscriptionsListSlice';
 import { useEffect } from 'react';
+import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
 export const SearchSubscription = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(fetchSubscriptionsList());
+
     return () => {
       dispatch(clearSearchAndSortFields());
     };
