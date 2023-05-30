@@ -6,12 +6,12 @@ import classes from './NewSubscription.module.css';
 import { DatePick } from '../DatePicker/DatePicker';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {
-  validationSchema,
+  validationSubscriptionSchema,
   currenciesOptions,
   paymentFrequencyOptions,
-} from '../utils/validationSchema';
+} from '../utils/validationSubscriptionSchema';
 import { NotificationAdd } from '../Notifications/NotificationAdd';
-import { validTypes } from '../utils/valitTypesImages';
+import { validTypes } from '../utils/validTypesImages';
 
 export const NewSubscription = () => {
   const handleSubmit = async (values, resetForm) => {
@@ -123,7 +123,7 @@ export const NewSubscription = () => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={validationSubscriptionSchema}
       onSubmit={(values, { resetForm }) => handleSubmit(values, resetForm)}
     >
       {({ values, setFieldValue, resetForm }) => (

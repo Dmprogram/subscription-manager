@@ -5,6 +5,7 @@ import { getSubscriptions } from '../services/requestSubscriptions';
 import { countAverageExpenses } from '../utils/countAverageExpenses';
 import { sortPaymentsToOldest } from '../utils/sortPaymentsToOldest';
 import { sortByParameter } from '../utils/sortByParameter';
+import { changeDate } from '../utils/changeDate';
 export const fetchSubscriptionsList = createAsyncThunk(
   'users/fetchSubscriptionsList',
   getSubscriptions
@@ -113,6 +114,7 @@ const subscriptionsListSlice = createSlice({
         state.error = null;
 
         state.fetchedSubscriptions = action.payload;
+        state.fetchedSubscriptions = changeDate(state.fetchedSubscriptions);
 
         state.activeSubscriptions = sortByParameter(
           state.fetchedSubscriptions.filter((el) => el.status),

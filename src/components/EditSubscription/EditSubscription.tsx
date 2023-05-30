@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
 import { Spinner } from '../Spinner/Spinner';
-import { validTypes } from '../utils/valitTypesImages';
+import { validTypes } from '../utils/validTypesImages';
 import { doc, setDoc, deleteDoc } from 'firebase/firestore';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
@@ -13,10 +13,10 @@ import { db, auth, storage } from '../../firebase';
 import classes from './EditSubscription.module.css';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {
-  validationSchema,
+  validationSubscriptionSchema,
   currenciesOptions,
   paymentFrequencyOptions,
-} from '../utils/validationSchema';
+} from '../utils/validationSubscriptionSchema';
 import { useState } from 'react';
 import { NotificationDelete } from '../Notifications/NotificationDelete';
 import { NotificationEdit } from '../Notifications/NotificationEdit';
@@ -177,7 +177,7 @@ export const EditSubscription = () => {
   return (
     <Formik
       initialValues={subscription ?? initialValues}
-      validationSchema={validationSchema}
+      validationSchema={validationSubscriptionSchema}
       onSubmit={(values) => handleSubmit(values)}
     >
       {({ values, setFieldValue }) => (

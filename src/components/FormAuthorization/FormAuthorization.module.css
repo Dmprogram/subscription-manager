@@ -5,7 +5,9 @@
   align-items: center;
   flex-wrap: nowrap;
   flex-direction: column;
-  padding: 0 20px;
+  padding: 40px;
+  background-color: #2b2c2e;
+  border-radius: 20px;
 }
 
 .header {
@@ -19,25 +21,21 @@
 }
 
 .form {
-  background-color: #2b2c2e;
-  border-radius: 20px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 0;
 }
 
-.formContent {
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.field {
+  margin: 10px 0 20px;
+}
+
+.label {
+  margin-left: 5px;
 }
 
 .input {
+  margin: 5px 0;
+  padding: 10px;
   width: 100%;
-  margin: 10px 0 20px;
   padding: 10px;
   border-radius: 10px;
   border: 2px solid rgb(226, 224, 224);
@@ -79,4 +77,19 @@
 }
 .link:hover {
   text-decoration: underline;
+}
+
+.error {
+  margin-left: 5px;
+  color: rgb(223, 33, 33);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.authError {
+  font-size: 1.2rem;
+  margin-left: 5px;
+  color: rgb(223, 33, 33);
+  display: flex;
+  justify-content: center;
 }

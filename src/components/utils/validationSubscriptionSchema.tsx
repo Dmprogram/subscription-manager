@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 const twoDigisAfterComma = /^\d+(\.\d{0,2})?$/;
 
 const currencies = ['RUB', 'USD', 'EUR'];
-export const validationSchema = Yup.object({
+export const validationSubscriptionSchema = Yup.object({
   name: Yup.string().required('please enter a name'),
   price: Yup.number()
     .positive('price must be more than 0')

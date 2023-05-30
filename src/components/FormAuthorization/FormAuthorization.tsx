@@ -1,43 +1,103 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import classes from './FormAuthorization.module.css';
-
-interface FormProps {
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { validationRegister } from '../utils/validationRegister';
+import { useLayoutEffect, useRef } from 'react';
+interface FormAuthorization {
   submitTitle: string;
-  handleClick: (ev: React.FormEvent, email: string, password: string) => void;
+
+  handleSubmit: (
+    values: { email: string; password: string },
+    setFieldValue: (field: string, value: string, shouldValidate: boolean) => void
+  ) => void;
+  setAuthError?: (authError: boolean) => void;
+  authError?: string | boolean | null;
 }
 
-export const Form: FC<FormProps> = ({ submitTitle, handleClick }) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+export const FormAuthorization: FC<FormAuthorization> = ({
+  submitTitle,
+  handleSubmit,
+  authError,
+  setAuthError,
+}) => {
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
+  useLayoutEffect(() => {
+    if (emailRef.current && authError !== false) {
+      emailRef.current.focus();
+    }
+    if (emailRef.current && authError === 'User not found') {
+      emailRef.current.focus();
+    }
+    if (passwordRef.current && authError === 'Wrong password') {
+      passwordRef.current.focus();
+    }
+  }, [authError]);
+
+  const initialValues = {
+    email: '',
+    password: '',
+  };
+  const renderError = (message: string) => <div className={classes.error}>{message}</div>;
   return (
-    <form onSubmit={(ev) => handleClick(ev, email, password)}>
-      <label htmlFor='email'>Email</label>
-      <input
-        className={classes.input}
-        type='email'
-        name='email'
-        id='email'
-        placeholder='john@example.com'
-        value={email}
-        onChange={(ev) => setEmail(ev.target.value)}
-      ></input>
-      <label htmlFor='password'>Password</label>
-      <input
-        className={classes.input}
-        type='password'
-        name='password'
-        id='password'
-        placeholder='********'
-        value={password}
-        onChange={(ev) => setPassword(ev.target.value)}
-      ></input>
-      <input
-        className={classes.inputSubmit}
-        onClick={(ev) => handleClick(ev, email, password)}
-        type='submit'
-        value={submitTitle}
-      />
-    </form>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationRegister}
+      onSubmit={(values, { setFieldValue }) => {
+        handleSubmit(values, setFieldValue);
+      }}
+    >
+      {({ values, setFieldValue }) => (
+        <Form className={classes.form}>
+          <div className={classes.field}>
+            <label htmlFor='email' className={classes.label}>
+              Email
+            </label>
+            <Field
+              className={classes.input}
+              type='email'
+              name='email'
+              id='email'
+              placeholder='john@example.com'
+              innerRef={emailRef}
+              onFocus={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                ev.target.setSelectionRange(ev.target.value.length, ev.target.value.length)
+              }
+            />
+            <ErrorMessage name='email' render={renderError} />
+          </div>
+          <div className={classes.field}>
+            <label htmlFor='password' className={classes.label}>
+              Password
+            </label>
+            <Field
+              className={classes.input}
+              type='password'
+              name='password'
+              id='password'
+              placeholder='********'
+              innerRef={passwordRef}
+              value={values.password}
+              onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                setFieldValue('password', ev.target.value, true);
+                if (authError) {
+                  setAuthError(false);
+                }
+              }}
+            />
+            {authError ? (
+              <div className={classes.error}>{authError}</div>
+            ) : (
+              <ErrorMessage name='password' render={renderError} />
+            )}
+          </div>
+
+          <button className={classes.inputSubmit} type='submit'>
+            {submitTitle}
+          </button>
+        </Form>
+      )}
+    </Formik>
   );
 };
