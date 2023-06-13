@@ -1,14 +1,12 @@
 .container {
   margin-top: 20px;
   display: flex;
+  font-size: 1.2rem;
   justify-content: center;
-  font-size: 1rem;
+  overflow-x: scroll;
 }
-
-@media (min-device-width: 320px) and (max-device-width: 568px) {
-  .container {
-    font-size: 0.8rem;
-  }
+.container::-webkit-scrollbar {
+  display: none;
 }
 
 .link {
@@ -29,4 +27,26 @@
   padding: 14px;
   box-shadow: inset 0 -3px 0 -1px rgb(191, 192, 191);
   color: #f3f4f4;
+}
+
+@media (min-device-width: 320px) and (max-device-width: 568px) {
+  .container {
+    justify-content: flex-start;
+    font-size: 0.9rem;
+  }
+  .link {
+    white-space: nowrap;
+    padding: 10px;
+  }
+  .linkActive {
+    white-space: nowrap;
+    padding: 10px;
+  }
+}
+
+@media (min-device-width: 320px) and (max-device-width: 359px) {
+  .container {
+    justify-content: flex-start;
+    font-size: 0.8rem;
+  }
 }

@@ -7,9 +7,9 @@
   }
 }
 .spinner div {
-  width: 46.2px;
-  height: 46.2px;
-  border: 4.4px solid #d8ed1e;
+  width: 46px;
+  height: 46px;
+  border: 4px solid #d8ed1e;
   border-top-color: transparent;
   border-radius: 50%;
 }
@@ -19,23 +19,16 @@
   left: 55.00000000000001px;
 }
 .container {
-  width: 110px;
-  height: 110px;
-  display: inline-block;
   overflow: hidden;
-  margin: 0 auto;
-  padding: 300px 0;
-  width: 100%;
-}
-.spinner {
-  height: 100%;
-  width: 100%;
+  padding-top: 300px;
+  padding-left: 52px;
   display: flex;
   justify-content: center;
-  position: relative;
+}
+.spinner {
   transform: translateZ(0) scale(1);
   backface-visibility: hidden;
-  transform-origin: 0 0; /* see note above */
+  transform-origin: 0 0;
 }
 .spinner div {
   box-sizing: content-box;

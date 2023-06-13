@@ -5,8 +5,11 @@ import IconButton from '@mui/joy/IconButton';
 import CloseRounded from '@mui/icons-material/CloseRounded';
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
 import { addSortByParameter } from '../store/subscriptionsListSlice';
+import { useRef } from 'react';
 export const SelectSortType = () => {
+  const windowWidth = useRef(window.innerWidth);
   const { sortByParameter } = useAppSelector((state) => state.subscriptionsList);
+  const minWidth = windowWidth.current < 568 ? 120 : 160;
   const dispatch = useAppDispatch();
   const action: SelectStaticProps['action'] = React.useRef(null);
   return (
@@ -15,7 +18,7 @@ export const SelectSortType = () => {
       variant='plain'
       action={action}
       value={sortByParameter}
-      size='md'
+      size={windowWidth.current < 568 ? 'sm' : 'md'}
       placeholder='Sort by...'
       onChange={(e, newValue) => {
         dispatch(addSortByParameter({ sortByParameter: newValue }));
@@ -39,7 +42,10 @@ export const SelectSortType = () => {
         ),
         indicator: null,
       })}
-      sx={{ minWidth: 160 }}
+      sx={{
+        height: 2,
+        minWidth: minWidth,
+      }}
     >
       <Option value='dateToOld'>Newest to Oldest</Option>
       <Option value='dateToNew'>Oldest to Newest</Option>

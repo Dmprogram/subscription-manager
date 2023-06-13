@@ -1,5 +1,5 @@
 .payments {
-  margin: 40px auto;
+  margin: 60px auto;
   max-width: 1000px;
   display: flex;
   flex-direction: column;
@@ -8,6 +8,13 @@
 .header {
   align-self: center;
   font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+.headerLoading {
+  align-self: center;
+  font-size: 1.4rem;
+  margin-bottom: 80px;
 }
 
 .paymentsTitle {
@@ -39,4 +46,22 @@
   margin-top: 20px;
   font-size: 1.5rem;
   color: #d4e511;
+}
+
+@media (min-device-width: 320px) and (max-device-width: 568px) {
+  .header,
+  .headerLoading,
+  .results {
+    font-size: 1rem;
+  }
+  .payments {
+    margin: 40px auto;
+  }
+  .paymentsTitle {
+    margin: 25px 0 5px;
+  }
+  .subscriptionNotFound {
+    font-size: 1.1rem;
+    margin-top: 10px;
+  }
 }

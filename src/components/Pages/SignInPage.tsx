@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const SignInPage = () => {
   return (
     <section className={classes.container}>
-      <h1 className={classes.header}>Sign In to Subscription manager</h1>
+      <h1 className={classes.header}>Sign In Subscription manager</h1>
       <div className={classes.description}>Quick & Simple way to monitor your subscriptions</div>
       <SignIn />
       <div className={classes.registration}>

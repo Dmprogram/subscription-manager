@@ -1,5 +1,5 @@
 .container {
-  margin: 60px auto 40px;
+  margin: 60px auto;
   max-width: 628px;
   display: flex;
   align-items: center;
@@ -12,6 +12,7 @@
 
 .header {
   margin: 0;
+  font-size: 2rem;
 }
 
 .description {
@@ -92,4 +93,36 @@
   color: rgb(223, 33, 33);
   display: flex;
   justify-content: center;
+}
+
+@media (min-device-width: 320px) and (max-device-width: 568px) {
+  .container {
+    margin: 40px 10px;
+    padding: 20px 15px;
+  }
+  .header {
+    font-size: 1.6rem;
+  }
+  .description {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+  .registration {
+    font-size: 1rem;
+  }
+  .inputSubmit {
+    margin-top: 10px;
+  }
+}
+
+@media (min-device-width: 320px) and (max-device-width: 360px) {
+  .header {
+    font-size: 1.3rem;
+  }
+  .description {
+    font-size: 0.8rem;
+  }
+  .registration {
+    font-size: 0.9rem;
+  }
 }

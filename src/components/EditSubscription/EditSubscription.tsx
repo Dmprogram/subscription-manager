@@ -2,7 +2,7 @@ import { DatePick } from '../DatePicker/DatePicker';
 import cancel from '../../assets/cancel.png';
 import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
 import { Spinner } from '../Spinner/Spinner';
 import { validTypes } from '../utils/validTypesImages';
@@ -22,6 +22,8 @@ import { NotificationDelete } from '../Notifications/NotificationDelete';
 import { NotificationEdit } from '../Notifications/NotificationEdit';
 import { AlertDeleteSubscription } from '../AlertDeleteSubscription/AlertDeleteSubscription';
 export const EditSubscription = () => {
+  const windowWidth = useRef(window.innerWidth);
+  const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload';
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { subscriptionId } = useParams();
@@ -31,7 +33,6 @@ export const EditSubscription = () => {
 
   useEffect(() => {
     dispatch(fetchSubscriptionsList());
-    setImageUrl(subscription?.imageUrl);
   }, [fetchedSubscriptions.length]);
 
   const [disabledSubmit, setDisabledSubmit] = useState(false);
@@ -49,7 +50,6 @@ export const EditSubscription = () => {
 
   useEffect(() => {
     if (!file) {
-      setPreview(null);
       return;
     }
     const objectUrl = URL.createObjectURL(file);
@@ -67,14 +67,12 @@ export const EditSubscription = () => {
       setDisabledImageIChanges(false);
       setDisabledSubmit(false);
       setProgress('Image is missing');
-      setImageUrl(null);
       return;
     } else if (!validTypes.includes(file.type.split('/')[1])) {
       setDisabledImageIChanges(false);
       setDisabledSubmit(false);
       setProgress('Invalid format');
       setFile(null);
-      setImageUrl(null);
       return;
     }
     const storageRef = ref(storage, `images/${file.name}`);
@@ -95,7 +93,7 @@ export const EditSubscription = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           setImageUrl(url);
-          setProgress('Image has been uploaded');
+          setProgress('Uploaded image');
           setDisabledSubmit(false);
         });
       }
@@ -173,7 +171,6 @@ export const EditSubscription = () => {
     date: null,
     id: null,
   };
-
   return (
     <Formik
       initialValues={subscription ?? initialValues}
@@ -256,7 +253,13 @@ export const EditSubscription = () => {
                       <img src={preview} className={classes.image} alt='preview' />
                     </div>
                   )) ??
-                    progress}
+                    (imageUrl ? (
+                      <div className={classes.imageContainer}>
+                        {progress} <img src={preview} className={classes.image} alt='preview' />
+                      </div>
+                    ) : (
+                      progress
+                    ))}
                 </div>
               </label>
               <button
@@ -265,7 +268,7 @@ export const EditSubscription = () => {
                 className={classes.buttonUpload}
                 disabled={disabledImageChanges}
               >
-                Upload
+                {uploadText}
               </button>
             </div>
             <button

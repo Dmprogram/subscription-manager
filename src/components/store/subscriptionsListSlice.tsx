@@ -130,9 +130,9 @@ const subscriptionsListSlice = createSlice({
 
         state.upcomingPayments = sortPaymentsToOldest(state.activeSubscriptions, 3);
 
-        state.searchSubsciptions = state.fetchedSubscriptions.filter((el) =>
-          el.name.toLowerCase().includes(state.inputSearch.toLowerCase())
-        );
+        state.searchSubsciptions = state.fetchedSubscriptions.filter((el) => {
+          return el.name.toLowerCase().includes(state.inputSearch.toLowerCase());
+        });
       })
       .addCase(fetchSubscriptionsList.rejected, (state, action) => {
         state.loading = 'failed';

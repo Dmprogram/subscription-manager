@@ -1,7 +1,7 @@
 import { collection, addDoc } from 'firebase/firestore';
 import { db, auth, storage } from '../../firebase';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import classes from './NewSubscription.module.css';
 import { DatePick } from '../DatePicker/DatePicker';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -14,6 +14,9 @@ import { NotificationAdd } from '../Notifications/NotificationAdd';
 import { validTypes } from '../utils/validTypesImages';
 
 export const NewSubscription = () => {
+  const windowWidth = useRef(window.innerWidth);
+  const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload';
+
   const handleSubmit = async (values, resetForm) => {
     setLoading(true);
     setDisabledSubmit(true);
@@ -56,10 +59,8 @@ export const NewSubscription = () => {
 
   useEffect(() => {
     if (!file) {
-      setPreview(null);
       return;
     }
-
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
   }, [file]);
@@ -101,7 +102,7 @@ export const NewSubscription = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           setImageUrl(url);
-          setProgress('Image has been uploaded');
+          setProgress('Uploaded image');
           setDisabledSubmit(false);
         });
       }
@@ -202,7 +203,13 @@ export const NewSubscription = () => {
                       <img src={preview} className={classes.image} alt='preview' />
                     </div>
                   )) ??
-                    progress}
+                    (imageUrl ? (
+                      <div className={classes.imageContainer}>
+                        {progress} <img src={preview} className={classes.image} alt='preview' />
+                      </div>
+                    ) : (
+                      progress
+                    ))}
                 </div>
               </label>
               <button
@@ -211,7 +218,7 @@ export const NewSubscription = () => {
                 className={classes.buttonUpload}
                 disabled={disabledImageChanges}
               >
-                Click to Upload
+                {uploadText}
               </button>
             </div>
             <button

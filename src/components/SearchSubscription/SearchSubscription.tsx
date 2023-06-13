@@ -20,7 +20,9 @@ export const SearchSubscription = () => {
   const { inputSearch } = useAppSelector((state) => state.subscriptionsList);
   return (
     <div className={classes.searchField}>
-      <label htmlFor='search'>FIND YOUR SUBSCRIPTION</label>
+      <label htmlFor='search' className={classes.searchTitle}>
+        FIND YOUR SUBSCRIPTION
+      </label>
       <div className={classes.inputField}>
         <img src={searchIcon} alt='search' className={classes.searchIcon} />
         <input

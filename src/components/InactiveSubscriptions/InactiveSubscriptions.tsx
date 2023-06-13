@@ -23,7 +23,7 @@ export const InactiveSubscriptions = () => {
   if (loading === 'pending')
     return (
       <section className={classes.payments}>
-        <header className={classes.header}>
+        <header className={classes.headerLoading}>
           <h3>DEACTIVATED SUBSCRIPTIONS</h3>
         </header>
         <SubscriptionsSkeleton />

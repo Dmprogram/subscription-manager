@@ -1,8 +1,11 @@
 .searchField {
-  margin: 40px auto 0;
+  margin: 60px auto 0;
   max-width: 1000px;
 }
 
+.searchTitle {
+  font-size: 1.2rem;
+}
 .inputField {
   width: 100%;
   background-color: rgb(243, 244, 245);
@@ -40,4 +43,24 @@
 .crossIcon:hover {
   content: url('..//../assets/darkCross.png');
   cursor: pointer;
+}
+
+@media (min-device-width: 320px) and (max-device-width: 568px) {
+  .searchField {
+    margin: 40px auto 0;
+  }
+  .inputField {
+    padding: 10px 15px;
+  }
+  .input {
+    font-size: 1rem;
+  }
+  .searchTitle {
+    font-size: 0.9rem;
+  }
+  .searchIcon,
+  .crossIcon {
+    width: 15px;
+    height: 15px;
+  }
 }

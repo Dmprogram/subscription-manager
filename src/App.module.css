@@ -2,8 +2,3 @@
   margin: 0 auto;
   max-width: 1440px;
 }
-@media (min-device-width: 320px) and (max-device-width: 568px) {
-  .app {
-    font-size: 0.6rem;
-  }
-}

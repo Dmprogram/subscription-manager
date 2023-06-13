@@ -11,6 +11,7 @@
 .paymentTitle {
   display: flex;
   align-items: center;
+  font-size: 1rem;
 }
 
 .applicationIcon {
@@ -31,6 +32,7 @@
   margin-top: 10px;
   display: flex;
   align-items: center;
+  font-size: 1rem;
 }
 
 .paymentValue {
@@ -57,5 +59,31 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media (min-device-width: 320px) and (max-device-width: 568px) {
+  .payment {
+    padding: 10px 15px;
+    margin-top: 10px;
+  }
+  .paymentTitle,
+  .paymentDate {
+    font-size: 0.8rem;
+  }
+  .paymentDate {
+    margin-top: 7px;
+  }
+  .paymentValue {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-device-width: 320px) and (max-device-width: 359px) {
+  .payment {
+    padding: 10px;
+  }
+  .paymentValue {
+    font-size: 0.9rem;
   }
 }

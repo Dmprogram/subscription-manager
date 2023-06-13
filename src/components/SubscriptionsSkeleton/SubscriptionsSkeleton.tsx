@@ -4,15 +4,7 @@ import classes from './SubscriptionsSkeleton.module.css';
 export const SubscriptionsSkeleton = () => {
   return (
     <Box sx={{ maxWidth: '1000px' }}>
-      <Box
-        sx={{
-          bgcolor: 'grey.900',
-          height: 115,
-          borderRadius: '10px',
-          padding: '15px 30px',
-          marginTop: '15px',
-        }}
-      >
+      <Box className={classes.container}>
         <div className={classes.containerBox}>
           <div className={classes.leftContent}>
             <Skeleton sx={{ bgcolor: 'grey.800' }} width='40%' height={26} />
@@ -25,15 +17,7 @@ export const SubscriptionsSkeleton = () => {
           </div>
         </div>
       </Box>
-      <Box
-        sx={{
-          bgcolor: 'grey.900',
-          height: 115,
-          borderRadius: '10px',
-          padding: '15px 30px',
-          marginTop: '15px',
-        }}
-      >
+      <Box className={classes.container}>
         <div className={classes.containerBox}>
           <div className={classes.leftContent}>
             <Skeleton sx={{ bgcolor: 'grey.800' }} width='40%' height={26} />
@@ -46,15 +30,7 @@ export const SubscriptionsSkeleton = () => {
           </div>
         </div>
       </Box>
-      <Box
-        sx={{
-          bgcolor: 'grey.900',
-          height: 115,
-          borderRadius: '10px',
-          padding: '15px 30px',
-          marginTop: '15px',
-        }}
-      >
+      <Box className={classes.container}>
         <div className={classes.containerBox}>
           <div className={classes.leftContent}>
             <Skeleton sx={{ bgcolor: 'grey.800' }} width='40%' height={26} />

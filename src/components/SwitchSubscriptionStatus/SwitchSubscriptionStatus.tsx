@@ -1,6 +1,5 @@
 import FormGroup from '@mui/material/FormGroup';
 import Switch from '@mui/material/Switch';
-import { Typography } from '@mui/joy';
 import Stack from '@mui/joy/Stack/Stack';
 import { useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
@@ -8,7 +7,10 @@ import { db, auth } from '../../firebase';
 import { changeStatus } from '../store/subscriptionsListSlice';
 import { useAppDispatch } from '../../hooks/ReduxHooks';
 import classes from './SwitchSubscriptionStatus.module.css';
+import { useRef } from 'react';
+
 export const SwitchSubscriptionStatus = ({ id, status }) => {
+  const windowWidth = useRef(window.innerWidth);
   const dispatch = useAppDispatch();
   const [checked, setChecked] = useState(status);
   const [loading, setLoading] = useState(false);
@@ -37,16 +39,22 @@ export const SwitchSubscriptionStatus = ({ id, status }) => {
   return (
     <FormGroup>
       <Stack direction='row' spacing={0} alignItems='center'>
-        <div>{!loading && !checked && 'Inactive'}</div>
-        <Switch checked={checked} onChange={handleChange} />
-        <div>
-          {loading ? (
-            <div>
-              <div className={classes.loader}></div>
-            </div>
-          ) : (
-            checked && 'Active'
-          )}
+        <div className={classes.container}>
+          <div>{!loading && !checked && 'Inactive'}</div>
+          <Switch
+            checked={checked}
+            onChange={handleChange}
+            size={windowWidth.current < 568 ? 'small' : 'medium'}
+          />
+          <div>
+            {loading ? (
+              <div>
+                <div className={classes.loader}></div>
+              </div>
+            ) : (
+              checked && 'Active'
+            )}
+          </div>
         </div>
       </Stack>
     </FormGroup>
