@@ -2,9 +2,9 @@ import { InactiveSubscriptions } from '../InactiveSubscriptions/InactiveSubscrip
 import { SearchSubscription } from '../SearchSubscription/SearchSubscription';
 export const InactiveSubscriptionsPage = () => {
   return (
-    <div>
+    <>
       <SearchSubscription />
       <InactiveSubscriptions />
-    </div>
+    </>
   );
 };

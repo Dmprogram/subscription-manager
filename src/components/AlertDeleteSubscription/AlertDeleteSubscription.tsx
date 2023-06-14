@@ -3,7 +3,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export const AlertDeleteSubscription = ({ openAlert, setOpenAlert, setDeleteSubscription }) => {
+interface AlertDeleteSubscription {
+  openAlert: boolean;
+  setOpenAlert: (value: boolean) => void;
+  setDeleteSubscription: (value: boolean) => void;
+}
+
+export const AlertDeleteSubscription: React.FC<AlertDeleteSubscription> = ({
+  openAlert,
+  setOpenAlert,
+  setDeleteSubscription,
+}) => {
   return (
     <div>
       <Dialog

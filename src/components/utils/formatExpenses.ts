@@ -1,4 +1,4 @@
-export const formatExpenses = (expenses, currency) => {
+export const formatExpenses = (expenses: number, currency: string) => {
   return expenses.toLocaleString('ru-RU', {
     style: 'currency',
     currency: currency,

@@ -6,8 +6,14 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
-
-export const NotificationEdit = ({ subscriptionEdit, setSubscriptionEdit }) => {
+interface NotificationEdit {
+  subscriptionEdit: boolean;
+  setSubscriptionEdit: (value: boolean) => void;
+}
+export const NotificationEdit: React.FC<NotificationEdit> = ({
+  subscriptionEdit,
+  setSubscriptionEdit,
+}) => {
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;

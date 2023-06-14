@@ -5,7 +5,8 @@ import money from '../../assets/money.png';
 import { formatExpenses } from '../utils/formatExpenses';
 import { formatDate } from '../utils/formatDate';
 import { useState } from 'react';
-export const UpcomingPaymentsItem = (props) => {
+import { Subscription } from '../store/types';
+export const UpcomingPaymentsItem = (props: Subscription) => {
   const [isLoadedImage, setIsLoadedImage] = useState(false);
 
   const onLoad = () => {

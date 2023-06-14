@@ -12,12 +12,29 @@ import {
 } from '../utils/validationSubscriptionSchema';
 import { NotificationAdd } from '../Notifications/NotificationAdd';
 import { validTypes } from '../utils/validTypesImages';
-
+import { NewSubscriptionValues } from './types';
 export const NewSubscription = () => {
+  const [disabledImageChanges, setDisabledImageIChanges] = useState(false);
+  const [disabledSubmit, setDisabledSubmit] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [progress, setProgress] = useState('Choose an image');
+  const [imageUrl, setImageUrl] = useState('');
+  const [preview, setPreview] = useState('');
+  const [subscriptionAdded, setSubscriptionAdded] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!file) {
+      return;
+    }
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+  }, [file]);
+
   const windowWidth = useRef(window.innerWidth);
   const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload';
 
-  const handleSubmit = async (values, resetForm) => {
+  const handleSubmit = async (values: NewSubscriptionValues, resetForm: () => void) => {
     setLoading(true);
     setDisabledSubmit(true);
     const user = auth.currentUser;
@@ -27,7 +44,7 @@ export const NewSubscription = () => {
       try {
         await addDoc(collection(db, 'users', user.uid, 'subscriptions'), {
           name,
-          price: parseFloat(price),
+          price: parseFloat(price as string),
           date,
           currency,
           paymentFrequency,
@@ -40,6 +57,7 @@ export const NewSubscription = () => {
         console.error('Error adding subscription: ', e);
       }
       setLoading(false);
+      setImageUrl('');
       setSubscriptionAdded(true);
       setFile(null);
       setDisabledSubmit(false);
@@ -48,27 +66,12 @@ export const NewSubscription = () => {
       resetForm();
     }
   };
-  const [disabledImageChanges, setDisabledImageIChanges] = useState(false);
-  const [disabledSubmit, setDisabledSubmit] = useState(false);
-  const [file, setFile] = useState(null);
-  const [progress, setProgress] = useState('Choose an image');
-  const [imageUrl, setImageUrl] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [subscriptionAdded, setSubscriptionAdded] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!file) {
-      return;
+  const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    if (ev.target.files !== null) {
+      setFile(ev.target.files[0]);
     }
-    const objectUrl = URL.createObjectURL(file);
-    setPreview(objectUrl);
-  }, [file]);
-
-  const handleChange = (ev) => {
-    setFile(ev.target.files[0]);
   };
-
   const uploadImage = () => {
     setDisabledImageIChanges(true);
     setDisabledSubmit(true);
@@ -108,14 +111,16 @@ export const NewSubscription = () => {
       }
     );
   };
-
   const initialValues = {
     name: '',
     price: '',
     currency: '',
     paymentFrequency: '',
     date: null,
-    dayjs: null,
+    status: null,
+    imageUrl: null,
+    creationTime: null,
+    id: '',
   };
 
   const renderError = (message: string) => <p className={classes.error}>{message}</p>;

@@ -3,9 +3,9 @@ import { UpcomingPayments } from '../UpcomingPayments/UpcomingPayments';
 
 export const MainPage = () => {
   return (
-    <div>
+    <>
       <AverageBoard />
       <UpcomingPayments />
-    </div>
+    </>
   );
 };

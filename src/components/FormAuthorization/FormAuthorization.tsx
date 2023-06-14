@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import classes from './FormAuthorization.module.css';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { validationRegister } from '../utils/validationRegister';
@@ -10,8 +10,8 @@ interface FormAuthorization {
     values: { email: string; password: string },
     setFieldValue: (field: string, value: string, shouldValidate: boolean) => void
   ) => void;
-  setAuthError?: (authError: boolean) => void;
-  authError?: string | boolean | null;
+  setAuthError: (authError: string | boolean | null) => void;
+  authError: string | boolean | null;
 }
 
 export const FormAuthorization: FC<FormAuthorization> = ({
@@ -22,12 +22,8 @@ export const FormAuthorization: FC<FormAuthorization> = ({
 }) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
   useLayoutEffect(() => {
     if (emailRef.current && authError !== false) {
-      emailRef.current.focus();
-    }
-    if (emailRef.current && authError === 'User not found') {
       emailRef.current.focus();
     }
     if (passwordRef.current && authError === 'Wrong password') {

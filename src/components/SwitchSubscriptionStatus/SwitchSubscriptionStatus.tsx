@@ -9,7 +9,11 @@ import { useAppDispatch } from '../../hooks/ReduxHooks';
 import classes from './SwitchSubscriptionStatus.module.css';
 import { useRef } from 'react';
 
-export const SwitchSubscriptionStatus = ({ id, status }) => {
+type SwitchSubscriptionStatus = {
+  id: string;
+  status: boolean;
+};
+export const SwitchSubscriptionStatus: React.FC<SwitchSubscriptionStatus> = ({ id, status }) => {
   const windowWidth = useRef(window.innerWidth);
   const dispatch = useAppDispatch();
   const [checked, setChecked] = useState(status);

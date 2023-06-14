@@ -7,7 +7,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks';
 import { SubscriptionsSkeleton } from '../SubscriptionsSkeleton/SubscriptionsSkeleton';
 import { SelectSortType } from '../SelectSortType/SelectSortType';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-
+import { Subscription } from '../store/types';
 export const ActiveSubscriptions = () => {
   const dispatch = useAppDispatch();
   const { activeSubscriptions, loading, error, inputSearch, searchSubsciptions } = useAppSelector(
@@ -21,7 +21,7 @@ export const ActiveSubscriptions = () => {
 
   useEffect(() => {
     dispatch(fetchSubscriptionsList());
-  }, []);
+  }, [dispatch]);
 
   if (loading === 'pending')
     return (
@@ -44,7 +44,7 @@ export const ActiveSubscriptions = () => {
       </header>
       {searchSubsciptions.length > 0 ? (
         <div>
-          {searchSubsciptions.map((subscription) => (
+          {searchSubsciptions.map((subscription: Subscription) => (
             <SubscriptionItem key={subscription.id} {...subscription} />
           ))}
         </div>
@@ -72,7 +72,7 @@ export const ActiveSubscriptions = () => {
         ) : null}
       </div>
       <div ref={parent}>
-        {activeSubscriptions.map((subscription) => (
+        {activeSubscriptions.map((subscription: Subscription) => (
           <SubscriptionItem key={subscription.id} {...subscription} />
         ))}
       </div>

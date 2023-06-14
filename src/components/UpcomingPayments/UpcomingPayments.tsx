@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
 import { UpcomingPaymentsSkeleton } from '../UpcomingPaymentsSkeleton/UpcomingPaymentsSkeleton';
 import { clearAverageExpenses } from '../store/subscriptionsListSlice';
+import { Subscription } from '../store/types';
 export const UpcomingPayments = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -12,7 +13,7 @@ export const UpcomingPayments = () => {
     return () => {
       dispatch(clearAverageExpenses());
     };
-  }, []);
+  }, [dispatch]);
   const { upcomingPayments, loading, error } = useAppSelector((state) => state.subscriptionsList);
   if (loading === 'pending')
     return (
@@ -26,7 +27,7 @@ export const UpcomingPayments = () => {
       <h3 className={classes.paymentsTitle}>
         {upcomingPayments.length !== 0 ? 'UPCOMING PAYMENTS' : 'THERE IS NO UPCOMING PAYMENT'}
       </h3>
-      {upcomingPayments.map((subscription) => (
+      {upcomingPayments.map((subscription: Subscription) => (
         <UpcomingPaymentsItem key={subscription.id} {...subscription} />
       ))}
     </section>

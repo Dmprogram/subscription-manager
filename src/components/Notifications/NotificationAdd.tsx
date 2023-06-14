@@ -9,12 +9,19 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
-export const NotificationAdd = ({ subscriptionAdded, setSubscriptionAdded }) => {
+interface NotificationAdd {
+  subscriptionAdded: boolean;
+  setSubscriptionAdded: (value: boolean) => void;
+}
+
+export const NotificationAdd: React.FC<NotificationAdd> = ({
+  subscriptionAdded,
+  setSubscriptionAdded,
+}) => {
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
-
     setSubscriptionAdded(false);
   };
 

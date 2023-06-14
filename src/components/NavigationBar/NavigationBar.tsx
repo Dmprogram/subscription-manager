@@ -30,11 +30,9 @@ export const NavigationBar = () => {
 
       <NavLink
         onClick={() => {
-          signOut(auth)
-            .then(() => {})
-            .catch((error) => {
-              console.log(error);
-            });
+          signOut(auth).catch((error) => {
+            console.log(error);
+          });
         }}
         to='/login'
         className={classes.link}

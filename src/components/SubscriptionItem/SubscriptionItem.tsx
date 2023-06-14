@@ -8,8 +8,8 @@ import { formatExpenses } from '../utils/formatExpenses';
 import { formatDate } from '../utils/formatDate';
 import { useState } from 'react';
 import { SwitchSubscriptionStatus } from '../SwitchSubscriptionStatus/SwitchSubscriptionStatus';
-
-export const SubscriptionItem = (props) => {
+import { Subscription } from '../store/types';
+export const SubscriptionItem = (props: Subscription) => {
   const [isLoadedImage, setIsLoadedImage] = useState(false);
 
   const onLoad = () => {
@@ -17,11 +17,19 @@ export const SubscriptionItem = (props) => {
   };
 
   const { date, name, price, currency, id, paymentFrequency, imageUrl, status } = props;
-  const formatFrequency =
-    paymentFrequency === 'once a year' ? 'annually' : 'once a month' ? 'monthly' : '';
+
   const { year, month, day } = date;
   const opacity = status ? classes.activePayment : classes.inActivePayment;
   const { formatDay, formatMonth } = formatDate(year, month, day);
+
+  let formatFrequency;
+
+  if (paymentFrequency === 'once a year') {
+    formatFrequency = 'annually';
+  } else if (paymentFrequency === 'once a month') {
+    formatFrequency = 'monthly';
+  }
+
   return (
     <div className={opacity}>
       <div>

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-
+import { SubscriptionsState } from './types';
 import { getSubscriptions } from '../services/requestSubscriptions';
 import { countAverageExpenses } from '../utils/countAverageExpenses';
 import { sortPaymentsToOldest } from '../utils/sortPaymentsToOldest';
@@ -10,34 +10,6 @@ export const fetchSubscriptionsList = createAsyncThunk(
   'users/fetchSubscriptionsList',
   getSubscriptions
 );
-
-interface SubscriptionState {
-  subscription: {
-    name: string;
-    price: string;
-    currency: string;
-    paymentFrequency: string;
-    id: string;
-    date: {
-      day: number | null;
-      month: number | null;
-      year: number | null;
-    } | null;
-    status: string;
-    imageUrl: string;
-  };
-}
-
-interface SubscriptionsListState {
-  fetchedSubscriptions: Array<SubscriptionState>;
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
-  error: any;
-  inputSearch: string;
-  sortByParameter: null | string;
-  searchSubsciptions: Array<SubscriptionState>;
-  activeSubscriptions: Array<SubscriptionState>;
-  inactiveSubscriptions: Array<SubscriptionState>;
-}
 
 const initialState = {
   loading: 'idle',
@@ -54,7 +26,7 @@ const initialState = {
     averageExpensesUsd: null,
     averageExpensesEur: null,
   },
-} as SubscriptionsListState;
+} as SubscriptionsState;
 
 const subscriptionsListSlice = createSlice({
   name: 'subscriptionsList',
@@ -63,20 +35,22 @@ const subscriptionsListSlice = createSlice({
     findSubscription(state, action: PayloadAction<{ inputSearch: string }>) {
       state.inputSearch = action.payload.inputSearch;
       state.searchSubsciptions = state.fetchedSubscriptions.filter((el) =>
-        el.name.toLowerCase().includes(action.payload.inputSearch.toLowerCase())
+        el.name.toLowerCase().startsWith(action.payload.inputSearch.toLowerCase())
       );
     },
 
     changeStatus(state, action: PayloadAction<{ status: boolean; id: string }>) {
       const subscription = state.fetchedSubscriptions.find((el) => el.id === action.payload.id);
-      subscription.status = action.payload.status;
-      state.activeSubscriptions = state.fetchedSubscriptions.filter((el) => el.status);
-      state.inactiveSubscriptions = state.fetchedSubscriptions.filter((el) => !el.status);
-      state.searchSubsciptions.forEach((el, index) => {
-        if (el.id === subscription.id) {
-          state.searchSubsciptions[index] = subscription;
-        }
-      });
+      if (subscription !== undefined) {
+        subscription.status = action.payload.status;
+        state.activeSubscriptions = state.fetchedSubscriptions.filter((el) => el.status);
+        state.inactiveSubscriptions = state.fetchedSubscriptions.filter((el) => !el.status);
+        state.searchSubsciptions.forEach((el, index) => {
+          if (el.id === subscription.id) {
+            state.searchSubsciptions[index] = subscription;
+          }
+        });
+      }
     },
 
     clearSearchAndSortFields(state) {
@@ -112,8 +86,9 @@ const subscriptionsListSlice = createSlice({
       .addCase(fetchSubscriptionsList.fulfilled, (state, action) => {
         state.loading = 'succeeded';
         state.error = null;
-
-        state.fetchedSubscriptions = action.payload;
+        if (action.payload !== undefined) {
+          state.fetchedSubscriptions = action.payload;
+        }
         state.fetchedSubscriptions = changeDate(state.fetchedSubscriptions);
 
         state.activeSubscriptions = sortByParameter(
@@ -130,9 +105,9 @@ const subscriptionsListSlice = createSlice({
 
         state.upcomingPayments = sortPaymentsToOldest(state.activeSubscriptions, 3);
 
-        state.searchSubsciptions = state.fetchedSubscriptions.filter((el) => {
-          return el.name.toLowerCase().includes(state.inputSearch.toLowerCase());
-        });
+        state.searchSubsciptions = state.fetchedSubscriptions.filter((el) =>
+          el.name.toLowerCase().startsWith(state.inputSearch.toLowerCase())
+        );
       })
       .addCase(fetchSubscriptionsList.rejected, (state, action) => {
         state.loading = 'failed';

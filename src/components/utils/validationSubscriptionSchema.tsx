@@ -8,9 +8,9 @@ export const validationSubscriptionSchema = Yup.object({
   name: Yup.string().required('please enter a name'),
   price: Yup.number()
     .positive('price must be more than 0')
-    .test('is-decimal', 'price should have maximum two digits after comma', (val: any) => {
+    .test('is-decimal', 'price should have maximum two digits after comma', (val) => {
       if (val != undefined) {
-        return twoDigisAfterComma.test(val);
+        return twoDigisAfterComma.test(val.toString());
       }
       return true;
     })

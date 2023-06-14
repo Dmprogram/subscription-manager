@@ -1,4 +1,6 @@
-export const sortPaymentsToOldest = (fetchedSubscriptions, amount) => {
+import { Subscription } from '../store/types';
+
+export const sortPaymentsToOldest = (fetchedSubscriptions: Array<Subscription>, amount: number) => {
   if (fetchedSubscriptions.length === 0) return fetchedSubscriptions;
   const sortedArr = [...fetchedSubscriptions].sort((a, b) => {
     const timeA = new Date(`${a.date.year}-${a.date.month}-${a.date.day}`).getTime();

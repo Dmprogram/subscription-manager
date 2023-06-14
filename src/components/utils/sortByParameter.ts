@@ -1,4 +1,5 @@
 import { sortPaymentsToOldest } from './sortPaymentsToOldest';
+import { Subscription } from '../store/types';
 
 const currency = {
   RUB: 1,
@@ -6,7 +7,7 @@ const currency = {
   EUR: 3,
 };
 
-const sortPaymentsToNew = (fetchedSubscriptions) => {
+const sortPaymentsToNew = (fetchedSubscriptions: Array<Subscription>) => {
   const sortedArr = [...fetchedSubscriptions].sort((a, b) => {
     const timeA = new Date(`${a.date.year}-${a.date.month}-${a.date.day}`).getTime();
     const timeB = new Date(`${b.date.year}-${b.date.month}-${b.date.day}`).getTime();
@@ -19,9 +20,10 @@ const sortPaymentsToNew = (fetchedSubscriptions) => {
   return sortedArr;
 };
 
-const sortPaymentsToLow = (fetchedSubscriptions) => {
+const sortPaymentsToLow = (fetchedSubscriptions: Array<Subscription>) => {
   return [...fetchedSubscriptions].sort((a, b) => {
-    const sortByCurrency = currency[a.currency] - currency[b.currency];
+    const sortByCurrency =
+      currency[a.currency as keyof typeof currency] - currency[b.currency as keyof typeof currency];
     if (sortByCurrency === 0 && !!a.currency && !!b.currency) {
       return b.price - a.price;
     }
@@ -29,9 +31,10 @@ const sortPaymentsToLow = (fetchedSubscriptions) => {
   });
 };
 
-const sortPaymentsToHigh = (fetchedSubscriptions) => {
+const sortPaymentsToHigh = (fetchedSubscriptions: Array<Subscription>) => {
   return [...fetchedSubscriptions].sort((a, b) => {
-    const sortByCurrency = currency[a.currency] - currency[b.currency];
+    const sortByCurrency =
+      currency[a.currency as keyof typeof currency] - currency[b.currency as keyof typeof currency];
     if (sortByCurrency === 0 && !!a.currency && !!b.currency) {
       return a.price - b.price;
     }
@@ -39,22 +42,23 @@ const sortPaymentsToHigh = (fetchedSubscriptions) => {
   });
 };
 
-const sortPaymentsToZ = (fetchedSubscriptions) => {
+const sortPaymentsToZ = (fetchedSubscriptions: Array<Subscription>) => {
   return [...fetchedSubscriptions].sort((a, b) => {
     return a.name > b.name ? 1 : -1;
   });
 };
 
-const sortPaymentsToA = (fetchedSubscriptions) => {
+const sortPaymentsToA = (fetchedSubscriptions: Array<Subscription>) => {
   return [...fetchedSubscriptions].sort((a, b) => {
     return b.name > a.name ? 1 : -1;
   });
 };
 
-export const sortByParameter = (fetchedSubscriptions, parameter) => {
+export const sortByParameter = (
+  fetchedSubscriptions: Array<Subscription>,
+  parameter: string | null
+) => {
   switch (parameter) {
-    case null:
-      return fetchedSubscriptions;
     case 'dateToOld':
       return sortPaymentsToOldest(fetchedSubscriptions, fetchedSubscriptions.length);
     case 'dateToNew':
@@ -67,5 +71,7 @@ export const sortByParameter = (fetchedSubscriptions, parameter) => {
       return sortPaymentsToZ(fetchedSubscriptions);
     case 'alphabetToA':
       return sortPaymentsToA(fetchedSubscriptions);
+    default:
+      return fetchedSubscriptions;
   }
 };

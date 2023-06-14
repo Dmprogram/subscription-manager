@@ -1,4 +1,5 @@
-export const changeDate = (fetchedSubscriptions) => {
+import { Subscription } from '../store/types';
+export const changeDate = (fetchedSubscriptions: Array<Subscription>) => {
   const timeNow = new Date().getTime();
   return fetchedSubscriptions.map((item) => {
     let { month } = item.date;

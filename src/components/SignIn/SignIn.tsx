@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormAuthorization } from '../FormAuthorization/FormAuthorization';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +5,7 @@ import { auth } from '../../firebase';
 import { useState } from 'react';
 
 export const SignIn = () => {
-  const [authError, setAuthError] = useState(null);
+  const [authError, setAuthError] = useState<string | null | boolean>(null);
 
   const navigate = useNavigate();
   const handleLogin = (
@@ -14,7 +13,6 @@ export const SignIn = () => {
     setFieldValue: (field: string, value: string, shouldValidate: boolean) => void
   ) => {
     const { email, password } = values;
-    console.log(authError);
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         navigate('/');

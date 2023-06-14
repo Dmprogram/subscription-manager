@@ -15,7 +15,7 @@ export const SearchSubscription = () => {
     return () => {
       dispatch(clearSearchAndSortFields());
     };
-  }, []);
+  }, [dispatch]);
 
   const { inputSearch } = useAppSelector((state) => state.subscriptionsList);
   return (

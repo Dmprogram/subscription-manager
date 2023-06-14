@@ -6,6 +6,7 @@ import { SubscriptionsSkeleton } from '../SubscriptionsSkeleton/SubscriptionsSke
 import { SelectSortType } from '../SelectSortType/SelectSortType';
 import { SubscriptionItem } from '../SubscriptionItem/SubscriptionItem';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { Subscription } from '../store/types';
 export const InactiveSubscriptions = () => {
   const dispatch = useAppDispatch();
   const { inactiveSubscriptions, loading, error, inputSearch, searchSubsciptions } = useAppSelector(
@@ -18,7 +19,7 @@ export const InactiveSubscriptions = () => {
   });
   useEffect(() => {
     dispatch(fetchSubscriptionsList());
-  }, []);
+  }, [dispatch]);
 
   if (loading === 'pending')
     return (
@@ -36,7 +37,7 @@ export const InactiveSubscriptions = () => {
       </header>
       {searchSubsciptions.length > 0 ? (
         <div>
-          {searchSubsciptions.map((subscription) => (
+          {searchSubsciptions.map((subscription: Subscription) => (
             <SubscriptionItem key={subscription.id} {...subscription} />
           ))}
         </div>
@@ -61,7 +62,7 @@ export const InactiveSubscriptions = () => {
         ) : null}
       </div>
       <div ref={parent}>
-        {inactiveSubscriptions.map((subscription) => (
+        {inactiveSubscriptions.map((subscription: Subscription) => (
           <SubscriptionItem key={subscription.id} {...subscription} />
         ))}
       </div>

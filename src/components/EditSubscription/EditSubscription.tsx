@@ -21,6 +21,8 @@ import { useState } from 'react';
 import { NotificationDelete } from '../Notifications/NotificationDelete';
 import { NotificationEdit } from '../Notifications/NotificationEdit';
 import { AlertDeleteSubscription } from '../AlertDeleteSubscription/AlertDeleteSubscription';
+import { Subscription } from '../store/types';
+import { EditValues } from './types';
 export const EditSubscription = () => {
   const windowWidth = useRef(window.innerWidth);
   const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload';
@@ -29,24 +31,21 @@ export const EditSubscription = () => {
   const { subscriptionId } = useParams();
   const { fetchedSubscriptions, loading } = useAppSelector((state) => state.subscriptionsList);
 
-  const subscription = fetchedSubscriptions.find((el) => el.id === subscriptionId);
-
-  useEffect(() => {
-    dispatch(fetchSubscriptionsList());
-  }, [fetchedSubscriptions.length]);
-
   const [disabledSubmit, setDisabledSubmit] = useState(false);
-  const [disabledDelete, setDisabledDelete] = useState(false);
   const [disabledImageChanges, setDisabledImageIChanges] = useState(false);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState('Choose new image');
-  const [imageUrl, setImageUrl] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const [preview, setPreview] = useState('');
   const [subscriptionDelete, setSubscriptionDelete] = useState(false);
   const [subscriptionEdit, setSubscriptionEdit] = useState(false);
   const [deleteSubscription, setDeleteSubscription] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchSubscriptionsList());
+  }, [fetchedSubscriptions.length, dispatch]);
 
   useEffect(() => {
     if (!file) {
@@ -56,8 +55,16 @@ export const EditSubscription = () => {
     setPreview(objectUrl);
   }, [file]);
 
-  const handleChange = (ev) => {
-    setFile(ev.target.files[0]);
+  useEffect(() => {
+    if (deleteSubscription) {
+      handleDeleteSubscription();
+    }
+  });
+
+  const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    if (ev.target.files !== null) {
+      setFile(ev.target.files[0]);
+    }
   };
 
   const uploadImage = () => {
@@ -100,12 +107,6 @@ export const EditSubscription = () => {
     );
   };
 
-  useEffect(() => {
-    if (deleteSubscription) {
-      handleDeleteSubscription();
-    }
-  }, [deleteSubscription]);
-
   const handleClickDelete = () => {
     setOpenAlert(true);
   };
@@ -126,9 +127,8 @@ export const EditSubscription = () => {
     }
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values: EditValues) => {
     setLoadingEdit(true);
-    setDisabledDelete(true);
     setDisabledSubmit(true);
     const user = auth.currentUser;
     if (user && values.date) {
@@ -138,7 +138,7 @@ export const EditSubscription = () => {
           doc(db, 'users', user.uid, 'subscriptions', id),
           {
             name,
-            price: parseFloat(price),
+            price: parseFloat(price as string),
             date,
             currency,
             paymentFrequency,
@@ -163,154 +163,149 @@ export const EditSubscription = () => {
   if (loading === 'pending') return <Spinner />;
   if (loading === 'failed') return <h2>Sorry, something went wrong, but we fix it</h2>;
 
-  const initialValues = {
-    name: '',
-    price: '',
-    currency: '',
-    paymentFrequency: '',
-    date: null,
-    id: null,
-  };
-  return (
-    <Formik
-      initialValues={subscription ?? initialValues}
-      validationSchema={validationSubscriptionSchema}
-      onSubmit={(values) => handleSubmit(values)}
-    >
-      {({ values, setFieldValue }) => (
-        <section className={classes.container}>
-          <h2 className={classes.header}>Edit your subscription</h2>
-          <Form className={classes.form}>
-            <div className={classes.field}>
-              <label htmlFor='name'>Name</label>
-              <Field
-                className={classes.input}
-                type='text'
-                name='name'
-                id='name'
-                placeholder='Spotify'
-              />
-              <ErrorMessage name='name' render={renderError} />
-            </div>
-            <div className={classes.field}>
-              <label htmlFor='price'>Price</label>
-              <Field
-                className={classes.input}
-                type='text'
-                name='price'
-                id='price'
-                placeholder='200'
-              />
-              <ErrorMessage name='price' render={renderError} />
-            </div>
-            <div className={classes.field}>
-              <label htmlFor='datePicker'>Next payment</label>
-              <DatePick setFieldValue={setFieldValue} values={values} />
-            </div>
-            <div className={classes.field}>
-              <label htmlFor='currency'>Currency</label>
-              <Field
-                className={classes.input}
-                type='text'
-                as='select'
-                name='currency'
-                id='currency'
-              >
-                <option value={''}>Select currency</option>
-                {currenciesOptions}
-              </Field>
-
-              <ErrorMessage name='currency' render={renderError} />
-            </div>
-            <div className={classes.field}>
-              <label htmlFor='paymentFrequency'>Payment frequency</label>
-              <Field
-                className={classes.input}
-                as='select'
-                id='frequepaymentFrequencyncy'
-                name='paymentFrequency'
-              >
-                <option value={''}>Select frequency</option>
-                {paymentFrequencyOptions}
-              </Field>
-              <ErrorMessage name='paymentFrequency' render={renderError} />
-            </div>
-            <div className={classes.upload}>
-              <label className={disabledInput} htmlFor='file'>
-                <input
-                  type='file'
-                  id='file'
-                  accept='image/*'
-                  className={classes.inputImage}
-                  onChange={handleChange}
-                  name='file'
-                  disabled={disabledImageChanges}
+  const subscription = fetchedSubscriptions.find((el: Subscription) => el.id === subscriptionId);
+  if (subscription !== undefined) {
+    return (
+      <Formik
+        initialValues={subscription}
+        validationSchema={validationSubscriptionSchema}
+        onSubmit={(values) => handleSubmit(values)}
+      >
+        {({ values, setFieldValue }) => (
+          <section className={classes.container}>
+            <h2 className={classes.header}>Edit your subscription</h2>
+            <Form className={classes.form}>
+              <div className={classes.field}>
+                <label htmlFor='name'>Name</label>
+                <Field
+                  className={classes.input}
+                  type='text'
+                  name='name'
+                  id='name'
+                  placeholder='Spotify'
                 />
-                <div className={classes.text}>
-                  {(file?.name && (
-                    <div className={classes.imageContainer}>
-                      <div>Preview</div>
-                      <img src={preview} className={classes.image} alt='preview' />
-                    </div>
-                  )) ??
-                    (imageUrl ? (
+                <ErrorMessage name='name' render={renderError} />
+              </div>
+              <div className={classes.field}>
+                <label htmlFor='price'>Price</label>
+                <Field
+                  className={classes.input}
+                  type='text'
+                  name='price'
+                  id='price'
+                  placeholder='200'
+                />
+                <ErrorMessage name='price' render={renderError} />
+              </div>
+              <div className={classes.field}>
+                <label htmlFor='datePicker'>Next payment</label>
+                <DatePick setFieldValue={setFieldValue} values={values} />
+              </div>
+              <div className={classes.field}>
+                <label htmlFor='currency'>Currency</label>
+                <Field
+                  className={classes.input}
+                  type='text'
+                  as='select'
+                  name='currency'
+                  id='currency'
+                >
+                  <option value={''}>Select currency</option>
+                  {currenciesOptions}
+                </Field>
+
+                <ErrorMessage name='currency' render={renderError} />
+              </div>
+              <div className={classes.field}>
+                <label htmlFor='paymentFrequency'>Payment frequency</label>
+                <Field
+                  className={classes.input}
+                  as='select'
+                  id='frequepaymentFrequencyncy'
+                  name='paymentFrequency'
+                >
+                  <option value={''}>Select frequency</option>
+                  {paymentFrequencyOptions}
+                </Field>
+                <ErrorMessage name='paymentFrequency' render={renderError} />
+              </div>
+              <div className={classes.upload}>
+                <label className={disabledInput} htmlFor='file'>
+                  <input
+                    type='file'
+                    id='file'
+                    accept='image/*'
+                    className={classes.inputImage}
+                    onChange={handleChange}
+                    name='file'
+                    disabled={disabledImageChanges}
+                  />
+                  <div className={classes.text}>
+                    {(file?.name && (
                       <div className={classes.imageContainer}>
-                        {progress} <img src={preview} className={classes.image} alt='preview' />
+                        <div>Preview</div>
+                        <img src={preview} className={classes.image} alt='preview' />
                       </div>
-                    ) : (
-                      progress
-                    ))}
-                </div>
-              </label>
+                    )) ??
+                      (imageUrl ? (
+                        <div className={classes.imageContainer}>
+                          {progress} <img src={preview} className={classes.image} alt='preview' />
+                        </div>
+                      ) : (
+                        progress
+                      ))}
+                  </div>
+                </label>
+                <button
+                  type='button'
+                  onClick={uploadImage}
+                  className={classes.buttonUpload}
+                  disabled={disabledImageChanges}
+                >
+                  {uploadText}
+                </button>
+              </div>
               <button
-                type='button'
-                onClick={uploadImage}
-                className={classes.buttonUpload}
-                disabled={disabledImageChanges}
+                name='button'
+                type='submit'
+                className={classes.buttonSubmit}
+                disabled={disabledSubmit}
               >
-                {uploadText}
+                {loadingEdit ? (
+                  <div className={classes.loaderContainer}>
+                    Loading...
+                    <div className={classes.loader}></div>
+                  </div>
+                ) : (
+                  'Edit Your Subscription'
+                )}
               </button>
-            </div>
-            <button
-              name='button'
-              type='submit'
-              className={classes.buttonSubmit}
-              disabled={disabledSubmit}
-            >
-              {loadingEdit ? (
-                <div className={classes.loaderContainer}>
-                  Loading...
-                  <div className={classes.loader}></div>
-                </div>
-              ) : (
-                'Edit Your Subscription'
-              )}
-            </button>
-            <button
-              type='reset'
-              className={classes.deleteSubscription}
-              onClick={handleClickDelete}
-              disabled={disabledSubmit}
-            >
-              <img src={cancel} alt='cancel' className={classes.cancel} />
-              Cancel Subscription
-            </button>
-            <AlertDeleteSubscription
-              openAlert={openAlert}
-              setOpenAlert={setOpenAlert}
-              setDeleteSubscription={setDeleteSubscription}
-            />
-            <NotificationDelete
-              subscriptionDelete={subscriptionDelete}
-              setSubscriptionDelete={setSubscriptionDelete}
-            />
-            <NotificationEdit
-              subscriptionEdit={subscriptionEdit}
-              setSubscriptionEdit={setSubscriptionEdit}
-            />
-          </Form>
-        </section>
-      )}
-    </Formik>
-  );
+              <button
+                type='reset'
+                className={classes.deleteSubscription}
+                onClick={handleClickDelete}
+                disabled={disabledSubmit}
+              >
+                <img src={cancel} alt='cancel' className={classes.cancel} />
+                Cancel Subscription
+              </button>
+              <AlertDeleteSubscription
+                openAlert={openAlert}
+                setOpenAlert={setOpenAlert}
+                setDeleteSubscription={setDeleteSubscription}
+              />
+              <NotificationDelete
+                subscriptionDelete={subscriptionDelete}
+                setSubscriptionDelete={setSubscriptionDelete}
+              />
+              <NotificationEdit
+                subscriptionEdit={subscriptionEdit}
+                setSubscriptionEdit={setSubscriptionEdit}
+              />
+            </Form>
+          </section>
+        )}
+      </Formik>
+    );
+  }
 };

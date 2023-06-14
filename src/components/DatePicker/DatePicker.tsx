@@ -8,12 +8,9 @@ import { DateValidationError } from '@mui/x-date-pickers/models';
 import 'dayjs/locale/en-gb';
 import classes from './DatePicker.module.css';
 import { validateDate } from '../utils/validateDate';
-
-const today = dayjs();
-const todayStartOfTheDay = today.startOf('day');
-const maxDate = dayjs().add(366, 'day');
-
-export const DatePick = ({ setFieldValue, values }) => {
+import { todayStartOfTheDay, maxDate } from '../utils/validateDate';
+import { DatePickProps } from './types';
+export const DatePick: React.FC<DatePickProps> = ({ setFieldValue, values }) => {
   const [error, setError] = useState<DateValidationError | null>(null);
   const errorMessage = useMemo(() => {
     switch (error) {
@@ -42,11 +39,10 @@ export const DatePick = ({ setFieldValue, values }) => {
             value={
               values.date
                 ? dayjs(`${values.date.year}-${values.date.month}-${values.date.day}`)
-                : values.dayjs
+                : null
             }
             onChange={(value) => {
               setFieldValue('date', validateDate(value), true);
-              setFieldValue('dayjs', value, true);
             }}
             orientation='portrait'
             slotProps={{

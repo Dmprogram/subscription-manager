@@ -21,7 +21,7 @@ export const SelectSortType = () => {
       size={windowWidth.current < 568 ? 'sm' : 'md'}
       placeholder='Sort by...'
       onChange={(e, newValue) => {
-        dispatch(addSortByParameter({ sortByParameter: newValue }));
+        dispatch(addSortByParameter({ sortByParameter: newValue as string | null }));
       }}
       {...(sortByParameter && {
         endDecorator: (
