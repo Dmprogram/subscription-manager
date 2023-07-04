@@ -1,11 +1,9 @@
-import { AverageBoard } from '../AverageBoard/AverageBoard';
-import { UpcomingPayments } from '../UpcomingPayments/UpcomingPayments';
+import { AverageBoard } from '../AverageBoard/AverageBoard'
+import { UpcomingPayments } from '../UpcomingPayments/UpcomingPayments'
 
-export const MainPage = () => {
-  return (
-    <>
-      <AverageBoard />
-      <UpcomingPayments />
-    </>
-  );
-};
+export const MainPage = () => (
+  <>
+    <AverageBoard />
+    <UpcomingPayments />
+  </>
+)

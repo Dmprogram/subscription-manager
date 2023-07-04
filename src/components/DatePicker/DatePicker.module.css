@@ -1,17 +1,18 @@
 .container {
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .pickerContainer {
   width: 100%;
-  border-radius: 10px;
-  background-color: #ffffff;
   margin: 5px 0;
+
+  background-color: #fff;
+  border: 2px solid rgb(226 224 224);
   border-radius: 10px;
-  border: 2px solid rgb(226, 224, 224);
+
   transition: 0.5s border-color;
 }
 
@@ -20,8 +21,8 @@
 }
 
 .pickerContainer:focus-within {
-  background-color: rgb(229, 230, 232);
-  border: 2px solid rgb(14, 108, 156);
+  background-color: rgb(229 230 232);
+  border: 2px solid rgb(14 108 156);
 }
 
 .pickerContainer fieldset {
@@ -34,10 +35,10 @@
 
 .error {
   font-size: 1rem;
-  color: rgb(223, 33, 33);
+  color: rgb(223 33 33);
 }
 
 .clue {
   font-size: 0.8rem;
-  color: rgb(207, 207, 32);
+  color: rgb(207 207 32);
 }

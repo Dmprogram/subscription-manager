@@ -1,33 +1,36 @@
-import { Link } from 'react-router-dom';
-import classes from './SubscriptionItem.module.css';
-import applicationIcon from '../../assets/applicationIcon.png';
-import calendar from '../../assets/calendar.png';
-import money from '../../assets/money.png';
-import edit from '../../assets/edit.png';
-import { formatExpenses } from '../utils/formatExpenses';
-import { formatDate } from '../utils/formatDate';
-import { useState } from 'react';
-import { SwitchSubscriptionStatus } from '../SwitchSubscriptionStatus/SwitchSubscriptionStatus';
-import { Subscription } from '../store/types';
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+
+import classes from './SubscriptionItem.module.css'
+
+import applicationIcon from '../../assets/applicationIcon.png'
+import calendar from '../../assets/calendar.png'
+import edit from '../../assets/edit.png'
+import money from '../../assets/money.png'
+import { Subscription } from '../store/types'
+import { SwitchSubscriptionStatus } from '../SwitchSubscriptionStatus/SwitchSubscriptionStatus'
+import { formatDate } from '../utils/formatDate'
+import { formatExpenses } from '../utils/formatExpenses'
+
 export const SubscriptionItem = (props: Subscription) => {
-  const [isLoadedImage, setIsLoadedImage] = useState(false);
+  const [isLoadedImage, setIsLoadedImage] = useState(false)
 
   const onLoad = () => {
-    setIsLoadedImage(true);
-  };
+    setIsLoadedImage(true)
+  }
 
-  const { date, name, price, currency, id, paymentFrequency, imageUrl, status } = props;
+  const { date, name, price, currency, id, paymentFrequency, imageUrl, status } = props
 
-  const { year, month, day } = date;
-  const opacity = status ? classes.activePayment : classes.inActivePayment;
-  const { formatDay, formatMonth } = formatDate(year, month, day);
+  const { year, month, day } = date
+  const opacity = status ? classes.activePayment : classes.inActivePayment
+  const { formatDay, formatMonth } = formatDate(year, month, day)
 
-  let formatFrequency;
+  let formatFrequency
 
   if (paymentFrequency === 'once a year') {
-    formatFrequency = 'annually';
+    formatFrequency = 'annually'
   } else if (paymentFrequency === 'once a month') {
-    formatFrequency = 'monthly';
+    formatFrequency = 'monthly'
   }
 
   return (
@@ -36,7 +39,7 @@ export const SubscriptionItem = (props: Subscription) => {
         <div className={classes.paymentTitle}>
           {imageUrl ? (
             <div className={classes.imageContainer}>
-              {isLoadedImage ? null : <div className={classes.loader}></div>}
+              {isLoadedImage ? null : <div className={classes.loader} />}
               <img
                 src={imageUrl}
                 alt='icon'
@@ -75,5 +78,5 @@ export const SubscriptionItem = (props: Subscription) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

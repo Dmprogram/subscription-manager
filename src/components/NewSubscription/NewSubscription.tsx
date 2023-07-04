@@ -1,46 +1,54 @@
-import { collection, addDoc } from 'firebase/firestore';
-import { db, auth, storage } from '../../firebase';
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
-import { useState, useEffect, useRef } from 'react';
-import classes from './NewSubscription.module.css';
-import { DatePick } from '../DatePicker/DatePicker';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { collection, addDoc } from 'firebase/firestore'
+
+import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
+
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import React, { useState, useEffect, useRef } from 'react'
+
+import classes from './NewSubscription.module.css'
+
+import { NewSubscriptionValues } from './types'
+
+import { db, auth, storage } from '../../firebase'
+
+import { DatePick } from '../DatePicker/DatePicker'
+
+import { NotificationAdd } from '../Notifications/NotificationAdd'
 import {
   validationSubscriptionSchema,
   currenciesOptions,
   paymentFrequencyOptions,
-} from '../utils/validationSubscriptionSchema';
-import { NotificationAdd } from '../Notifications/NotificationAdd';
-import { validTypes } from '../utils/validTypesImages';
-import { NewSubscriptionValues } from './types';
-export const NewSubscription = () => {
-  const windowWidth = useRef(window.innerWidth);
-  const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload';
+} from '../utils/validationSubscriptionSchema'
+import { validTypes } from '../utils/validTypesImages'
 
-  const [disabledSubmit, setDisabledSubmit] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
-  const [progress, setProgress] = useState('Choose an image');
-  const [imageUrl, setImageUrl] = useState<null | string>(null);
-  const [preview, setPreview] = useState('');
-  const [subscriptionAdded, setSubscriptionAdded] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+export const NewSubscription = () => {
+  const windowWidth = useRef(window.innerWidth)
+  const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload'
+
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
+  const [file, setFile] = useState<File | null>(null)
+  const [progress, setProgress] = useState('Choose an image')
+  const [imageUrl, setImageUrl] = useState<null | string>(null)
+  const [preview, setPreview] = useState('')
+  const [subscriptionAdded, setSubscriptionAdded] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     if (!file) {
-      return;
+      return
     }
-    const objectUrl = URL.createObjectURL(file);
-    setPreview(objectUrl);
-  }, [file]);
+    const objectUrl = URL.createObjectURL(file)
+    setPreview(objectUrl)
+  }, [file])
 
   const handleSubmit = async (values: NewSubscriptionValues, resetForm: () => void) => {
-    setLoading(true);
-    setDisabledSubmit(true);
-    const user = auth.currentUser;
+    setLoading(true)
+    setDisabledSubmit(true)
+    const user = auth.currentUser
     if (user && values.date) {
-      const { name, price, currency, paymentFrequency, date } = values;
-      const creationTime = new Date().getTime();
+      const { name, price, currency, paymentFrequency, date } = values
+      const creationTime = new Date().getTime()
       try {
         await addDoc(collection(db, 'users', user.uid, 'subscriptions'), {
           name,
@@ -51,62 +59,67 @@ export const NewSubscription = () => {
           creationTime,
           imageUrl,
           status: true,
-        });
-        setLoading(false);
-        setImageUrl('');
-        setSubscriptionAdded(true);
-        setFile(null);
-        setDisabledSubmit(false);
-        setProgress('Choose an image');
-        resetForm();
+        })
+        setLoading(false)
+        setImageUrl('')
+        setSubscriptionAdded(true)
+        setFile(null)
+        setDisabledSubmit(false)
+        setProgress('Choose an image')
+        resetForm()
       } catch (e) {
-        setError(true);
-        console.error('Error adding subscription: ', e);
+        setError(true)
+        console.error('Error adding subscription: ', e)
       }
     }
-  };
+  }
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     if (ev.target.files !== null) {
-      setFile(ev.target.files[0]);
+      setFile(ev.target.files[0])
     }
-  };
+  }
   const uploadImage = () => {
-    setDisabledSubmit(true);
+    setDisabledSubmit(true)
     if (!file) {
-      setDisabledSubmit(false);
-      setImageUrl(null);
-      setProgress('Image is missing');
-      return;
-    } else if (!validTypes.includes(file.type.split('/')[1])) {
-      setDisabledSubmit(false);
-      setProgress('Invalid format');
-      setFile(null);
-      return;
+      setDisabledSubmit(false)
+      setImageUrl(null)
+      setProgress('Image is missing')
+      return
     }
-    const storageRef = ref(storage, `images/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    if (!validTypes.includes(file.type.split('/')[1])) {
+      setDisabledSubmit(false)
+      setProgress('Invalid format')
+      setFile(null)
+      return
+    }
+    const storageRef = ref(storage, `images/${file.name}`)
+    const uploadTask = uploadBytesResumable(storageRef, file)
 
     uploadTask.on(
       'state_changed',
       (snapshot) => {
-        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        progress === 100 ? setProgress('Upload is almost done') : setProgress('Uploading...');
-        setFile(null);
+        const uploadProgress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+        if (uploadProgress === 100) {
+          setProgress('Upload is almost done')
+        } else {
+          setProgress('Uploading...')
+        }
+        setFile(null)
       },
-      (error) => {
-        console.log(error);
-        setDisabledSubmit(false);
+      (err) => {
+        console.log(err)
+        setDisabledSubmit(false)
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          setImageUrl(url);
-          setProgress('Uploaded image');
-          setDisabledSubmit(false);
-        });
-      }
-    );
-  };
+          setImageUrl(url)
+          setProgress('Uploaded image')
+          setDisabledSubmit(false)
+        })
+      },
+    )
+  }
   const initialValues = {
     name: '',
     price: '',
@@ -117,10 +130,10 @@ export const NewSubscription = () => {
     imageUrl: null,
     creationTime: null,
     id: '',
-  };
+  }
 
-  const renderError = (message: string) => <p className={classes.error}>{message}</p>;
-  const disabledInput = disabledSubmit ? classes.inActiveUpload : classes.activeUpload;
+  const renderError = (message: string) => <p className={classes.error}>{message}</p>
+  const disabledInput = disabledSubmit ? classes.inActiveUpload : classes.activeUpload
 
   return (
     <Formik
@@ -134,24 +147,12 @@ export const NewSubscription = () => {
           <Form className={classes.form}>
             <div className={classes.field}>
               <label htmlFor='name'>Name</label>
-              <Field
-                className={classes.input}
-                type='text'
-                name='name'
-                id='name'
-                placeholder='Spotify'
-              />
+              <Field className={classes.input} type='text' name='name' id='name' placeholder='Spotify' />
               <ErrorMessage name='name' render={renderError} />
             </div>
             <div className={classes.field}>
               <label htmlFor='price'>Price</label>
-              <Field
-                className={classes.input}
-                type='text'
-                name='price'
-                id='price'
-                placeholder='200'
-              />
+              <Field className={classes.input} type='text' name='price' id='price' placeholder='200' />
               <ErrorMessage name='price' render={renderError} />
             </div>
             <div className={classes.field}>
@@ -160,14 +161,8 @@ export const NewSubscription = () => {
             </div>
             <div className={classes.field}>
               <label htmlFor='currency'>Currency</label>
-              <Field
-                className={classes.input}
-                type='text'
-                as='select'
-                name='currency'
-                id='currency'
-              >
-                <option value={''}>Select currency</option>
+              <Field className={classes.input} type='text' as='select' name='currency' id='currency'>
+                <option value=''>Select currency</option>
                 {currenciesOptions}
               </Field>
 
@@ -175,13 +170,8 @@ export const NewSubscription = () => {
             </div>
             <div className={classes.field}>
               <label htmlFor='paymentFrequency'>Payment frequency</label>
-              <Field
-                className={classes.input}
-                as='select'
-                id='frequepaymentFrequencyncy'
-                name='paymentFrequency'
-              >
-                <option value={''}>Select frequency</option>
+              <Field className={classes.input} as='select' id='frequepaymentFrequencyncy' name='paymentFrequency'>
+                <option value=''>Select frequency</option>
                 {paymentFrequencyOptions}
               </Field>
               <ErrorMessage name='paymentFrequency' render={renderError} />
@@ -212,46 +202,28 @@ export const NewSubscription = () => {
                       progress)}
                 </div>
               </label>
-              <button
-                type='button'
-                onClick={uploadImage}
-                className={classes.buttonUpload}
-                disabled={disabledSubmit}
-              >
+              <button type='button' onClick={uploadImage} className={classes.buttonUpload} disabled={disabledSubmit}>
                 {uploadText}
               </button>
             </div>
-            <button
-              name='button'
-              type='submit'
-              className={classes.buttonSubmit}
-              disabled={disabledSubmit}
-            >
+            <button name='button' type='submit' className={classes.buttonSubmit} disabled={disabledSubmit}>
               {error
                 ? 'Something went wrong, but we fix it'
                 : (loading && (
                     <div className={classes.loaderContainer}>
                       Loading...
-                      <div className={classes.loader}></div>
+                      <div className={classes.loader} />
                     </div>
                   )) ||
                   'Add new subscription'}
             </button>
-            <button
-              type='reset'
-              className={classes.clearButton}
-              onClick={() => resetForm()}
-              disabled={disabledSubmit}
-            >
+            <button type='button' className={classes.clearButton} onClick={() => resetForm()} disabled={disabledSubmit}>
               <span>Clear all fields</span>
             </button>
-            <NotificationAdd
-              subscriptionAdded={subscriptionAdded}
-              setSubscriptionAdded={setSubscriptionAdded}
-            />
+            <NotificationAdd subscriptionAdded={subscriptionAdded} setSubscriptionAdded={setSubscriptionAdded} />
           </Form>
         </section>
       )}
     </Formik>
-  );
-};
+  )
+}

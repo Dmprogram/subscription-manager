@@ -1,28 +1,29 @@
-import FormGroup from '@mui/material/FormGroup';
-import Switch from '@mui/material/Switch';
-import Stack from '@mui/joy/Stack/Stack';
-import { useState } from 'react';
-import { doc, setDoc } from 'firebase/firestore';
-import { db, auth } from '../../firebase';
-import { changeStatus } from '../store/subscriptionsListSlice';
-import { useAppDispatch } from '../../hooks/ReduxHooks';
-import classes from './SwitchSubscriptionStatus.module.css';
-import { useRef } from 'react';
+import Stack from '@mui/joy/Stack/Stack'
+import FormGroup from '@mui/material/FormGroup'
+import Switch from '@mui/material/Switch'
+import { doc, setDoc } from 'firebase/firestore'
+import React, { useState, useRef } from 'react'
 
-type SwitchSubscriptionStatus = {
-  id: string;
-  status: boolean;
-};
-export const SwitchSubscriptionStatus: React.FC<SwitchSubscriptionStatus> = ({ id, status }) => {
-  const windowWidth = useRef(window.innerWidth);
-  const dispatch = useAppDispatch();
-  const [checked, setChecked] = useState(status);
-  const [loading, setLoading] = useState(false);
+import classes from './SwitchSubscriptionStatus.module.css'
+
+import { db, auth } from '../../firebase'
+import { useAppDispatch } from '../../hooks/ReduxHooks'
+import { changeStatus } from '../store/subscriptionsListSlice'
+
+type SwitchSubscriptionStatusProps = {
+  id: string
+  status: boolean
+}
+export const SwitchSubscriptionStatus: React.FC<SwitchSubscriptionStatusProps> = ({ id, status }) => {
+  const windowWidth = useRef(window.innerWidth)
+  const dispatch = useAppDispatch()
+  const [checked, setChecked] = useState(status)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = async () => {
-    const user = auth.currentUser;
-    setChecked(!checked);
-    setLoading(true);
+    const user = auth.currentUser
+    setChecked(!checked)
+    setLoading(true)
     if (user) {
       try {
         await setDoc(
@@ -30,30 +31,26 @@ export const SwitchSubscriptionStatus: React.FC<SwitchSubscriptionStatus> = ({ i
           {
             status: !status,
           },
-          { merge: true }
-        );
+          { merge: true },
+        )
       } catch (e) {
-        console.error('Error edit subscription: ', e);
+        console.error('Error edit subscription: ', e)
       }
-      dispatch(changeStatus({ status: !status, id: id }));
-      setLoading(false);
+      dispatch(changeStatus({ status: !status, id }))
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <FormGroup>
       <Stack direction='row' spacing={0} alignItems='center'>
         <div className={classes.container}>
           <div>{!loading && !checked && 'Inactive'}</div>
-          <Switch
-            checked={checked}
-            onChange={handleChange}
-            size={windowWidth.current < 568 ? 'small' : 'medium'}
-          />
+          <Switch checked={checked} onChange={handleChange} size={windowWidth.current < 568 ? 'small' : 'medium'} />
           <div>
             {loading ? (
               <div>
-                <div className={classes.loader}></div>
+                <div className={classes.loader} />
               </div>
             ) : (
               checked && 'Active'
@@ -62,5 +59,5 @@ export const SwitchSubscriptionStatus: React.FC<SwitchSubscriptionStatus> = ({ i
         </div>
       </Stack>
     </FormGroup>
-  );
-};
+  )
+}

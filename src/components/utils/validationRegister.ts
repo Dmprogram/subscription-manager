@@ -1,6 +1,7 @@
-import * as Yup from 'yup';
-import YupPassword from 'yup-password';
-YupPassword(Yup);
+import * as Yup from 'yup'
+import YupPassword from 'yup-password'
+
+YupPassword(Yup)
 export const validationRegister = Yup.object({
   email: Yup.string().email('Invalid email').required('Please enter an email'),
   password: Yup.string()
@@ -11,4 +12,4 @@ export const validationRegister = Yup.object({
     .min(6, 'Password must be at least 6 characters')
     .minSymbols(0)
     .required('Please enter a password'),
-});
+})

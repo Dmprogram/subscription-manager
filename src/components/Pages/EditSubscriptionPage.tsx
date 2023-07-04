@@ -1,4 +1,3 @@
-import { EditSubscription } from '../EditSubscription/EditSubscription';
-export const EditSubscriptionPage = () => {
-  return <EditSubscription />;
-};
+import { EditSubscription } from '../EditSubscription/EditSubscription'
+
+export const EditSubscriptionPage = () => <EditSubscription />

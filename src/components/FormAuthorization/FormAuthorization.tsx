@@ -1,47 +1,49 @@
-import { FC } from 'react';
-import classes from './FormAuthorization.module.css';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { validationRegister } from '../utils/validationRegister';
-import { useLayoutEffect, useRef } from 'react';
-interface FormAuthorization {
-  submitTitle: string;
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import React, { useLayoutEffect, useRef } from 'react'
+
+import classes from './FormAuthorization.module.css'
+
+import { validationRegister } from '../utils/validationRegister'
+
+interface FormAuthorizationProps {
+  submitTitle: string
 
   handleSubmit: (
     values: { email: string; password: string },
-    setFieldValue: (field: string, value: string, shouldValidate: boolean) => void
-  ) => void;
-  setAuthError: (authError: string | boolean | null) => void;
-  authError: string | boolean | null;
+    setFieldValue: (field: string, value: string, shouldValidate: boolean) => void,
+  ) => void
+  setAuthError: (authError: string | boolean | null) => void
+  authError: string | boolean | null
 }
 
-export const FormAuthorization: FC<FormAuthorization> = ({
+export const FormAuthorization: React.FC<FormAuthorizationProps> = ({
   submitTitle,
   handleSubmit,
   authError,
   setAuthError,
 }) => {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
   useLayoutEffect(() => {
     if (emailRef.current && authError !== false) {
-      emailRef.current.focus();
+      emailRef.current.focus()
     }
     if (passwordRef.current && authError === 'Wrong password') {
-      passwordRef.current.focus();
+      passwordRef.current.focus()
     }
-  }, [authError]);
+  }, [authError])
 
   const initialValues = {
     email: '',
     password: '',
-  };
-  const renderError = (message: string) => <div className={classes.error}>{message}</div>;
+  }
+  const renderError = (message: string) => <div className={classes.error}>{message}</div>
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationRegister}
       onSubmit={(values, { setFieldValue }) => {
-        handleSubmit(values, setFieldValue);
+        handleSubmit(values, setFieldValue)
       }}
     >
       {({ values, setFieldValue }) => (
@@ -52,7 +54,7 @@ export const FormAuthorization: FC<FormAuthorization> = ({
             </label>
             <Field
               className={classes.input}
-              type='email'
+              type='tel'
               name='email'
               id='email'
               placeholder='john@example.com'
@@ -76,9 +78,9 @@ export const FormAuthorization: FC<FormAuthorization> = ({
               innerRef={passwordRef}
               value={values.password}
               onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
-                setFieldValue('password', ev.target.value, true);
+                setFieldValue('password', ev.target.value, true)
                 if (authError) {
-                  setAuthError(false);
+                  setAuthError(false)
                 }
               }}
             />
@@ -95,5 +97,5 @@ export const FormAuthorization: FC<FormAuthorization> = ({
         </Form>
       )}
     </Formik>
-  );
-};
+  )
+}

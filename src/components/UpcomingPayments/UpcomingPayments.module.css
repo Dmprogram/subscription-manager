@@ -1,26 +1,27 @@
 .payments {
-  margin: 40px auto;
   max-width: 1000px;
+  margin: 40px auto;
 }
 
 .paymentsTitle {
-  font-size: 1.5rem;
   margin-bottom: 25px;
+  font-size: 1.5rem;
 }
 
-@media (min-device-width: 320px) and (max-device-width: 568px) {
+@media (device-width >= 320px) and (device-width <= 568px) {
   .payments {
     margin: 30px auto;
   }
+
   .paymentsTitle {
-    font-size: 1.2rem;
     margin-bottom: 15px;
+    font-size: 1.2rem;
   }
 }
 
-@media (min-device-width: 320px) and (max-device-width: 359px) {
+@media (device-width >= 320px) and (device-width <= 359px) {
   .paymentsTitle {
-    font-size: 1rem;
     margin-bottom: 15px;
+    font-size: 1rem;
   }
 }

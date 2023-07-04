@@ -1,25 +1,29 @@
-import classes from './InactiveSubscriptions.module.css';
-import { useEffect } from 'react';
-import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
-import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks';
-import { SubscriptionsSkeleton } from '../SubscriptionsSkeleton/SubscriptionsSkeleton';
-import { SelectSortType } from '../SelectSortType/SelectSortType';
-import { SubscriptionItem } from '../SubscriptionItem/SubscriptionItem';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { Subscription } from '../store/types';
+// eslint-disable-next-line import/no-unresolved
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useEffect } from 'react'
+
+import classes from './InactiveSubscriptions.module.css'
+
+import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks'
+import { SelectSortType } from '../SelectSortType/SelectSortType'
+import { fetchSubscriptionsList } from '../store/subscriptionsListSlice'
+import { Subscription } from '../store/types'
+import { SubscriptionItem } from '../SubscriptionItem/SubscriptionItem'
+import { SubscriptionsSkeleton } from '../SubscriptionsSkeleton/SubscriptionsSkeleton'
+
 export const InactiveSubscriptions = () => {
-  const dispatch = useAppDispatch();
-  const { inactiveSubscriptions, loading, error, inputSearch, searchSubsciptions } = useAppSelector(
-    (state) => state.subscriptionsList
-  );
+  const dispatch = useAppDispatch()
+  const { inactiveSubscriptions, loading, inputSearch, searchSubsciptions } = useAppSelector(
+    (state) => state.subscriptionsList,
+  )
   const [parent] = useAutoAnimate({
     duration: 300,
     easing: 'ease-in-out',
     disrespectUserMotionPreference: false,
-  });
+  })
   useEffect(() => {
-    dispatch(fetchSubscriptionsList());
-  }, [dispatch]);
+    dispatch(fetchSubscriptionsList())
+  }, [dispatch])
 
   if (loading === 'pending')
     return (
@@ -29,7 +33,7 @@ export const InactiveSubscriptions = () => {
         </header>
         <SubscriptionsSkeleton />
       </section>
-    );
+    )
   return inputSearch.length !== 0 ? (
     <section className={classes.payments}>
       <header className={classes.results}>
@@ -49,9 +53,7 @@ export const InactiveSubscriptions = () => {
     <section className={classes.payments}>
       <header className={classes.header}>
         <h3>
-          {inactiveSubscriptions.length !== 0
-            ? 'DEACTIVATED SUBSCRIPTIONS'
-            : 'THERE IS NO DEACTIVATED SUBSCRIPTION'}
+          {inactiveSubscriptions.length !== 0 ? 'DEACTIVATED SUBSCRIPTIONS' : 'THERE IS NO DEACTIVATED SUBSCRIPTION'}
         </h3>
       </header>
       <div className={classes.paymentsTitle}>
@@ -67,5 +69,5 @@ export const InactiveSubscriptions = () => {
         ))}
       </div>
     </section>
-  );
-};
+  )
+}

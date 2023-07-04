@@ -1,135 +1,144 @@
-import { DatePick } from '../DatePicker/DatePicker';
-import cancel from '../../assets/cancel.png';
-import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks';
-import { useParams } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
-import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
-import { Spinner } from '../Spinner/Spinner';
-import { validTypes } from '../utils/validTypesImages';
-import { doc, setDoc, deleteDoc } from 'firebase/firestore';
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
-import { useNavigate } from 'react-router-dom';
-import { db, auth, storage } from '../../firebase';
-import classes from './EditSubscription.module.css';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { doc, setDoc, deleteDoc } from 'firebase/firestore'
+import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
+
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { useNavigate, useParams } from 'react-router-dom'
+
+import classes from './EditSubscription.module.css'
+
+import { EditValues } from './types'
+
+import cancel from '../../assets/cancel.png'
+import { db, auth, storage } from '../../firebase'
+import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks'
+import { AlertDeleteSubscription } from '../AlertDeleteSubscription/AlertDeleteSubscription'
+import { DatePick } from '../DatePicker/DatePicker'
+import { NotificationDelete } from '../Notifications/NotificationDelete'
+import { NotificationEdit } from '../Notifications/NotificationEdit'
+import { Spinner } from '../Spinner/Spinner'
+import { fetchSubscriptionsList } from '../store/subscriptionsListSlice'
+import { Subscription } from '../store/types'
 import {
   validationSubscriptionSchema,
   currenciesOptions,
   paymentFrequencyOptions,
-} from '../utils/validationSubscriptionSchema';
-import { useState } from 'react';
-import { NotificationDelete } from '../Notifications/NotificationDelete';
-import { NotificationEdit } from '../Notifications/NotificationEdit';
-import { AlertDeleteSubscription } from '../AlertDeleteSubscription/AlertDeleteSubscription';
-import { Subscription } from '../store/types';
-import { EditValues } from './types';
+} from '../utils/validationSubscriptionSchema'
+import { validTypes } from '../utils/validTypesImages'
+
 export const EditSubscription = () => {
-  const windowWidth = useRef(window.innerWidth);
-  const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload';
+  const windowWidth = useRef(window.innerWidth)
+  const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload'
 
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { subscriptionId } = useParams();
-  const { fetchedSubscriptions, loading } = useAppSelector((state) => state.subscriptionsList);
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const { subscriptionId } = useParams()
+  const { fetchedSubscriptions, loading } = useAppSelector((state) => state.subscriptionsList)
 
-  const [disabledSubmit, setDisabledSubmit] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
-  const [progress, setProgress] = useState('Choose new image');
-  const [newImageUrl, setNewImageUrl] = useState<null | string>(null);
-  const [preview, setPreview] = useState('');
-  const [subscriptionDelete, setSubscriptionDelete] = useState(false);
-  const [subscriptionEdit, setSubscriptionEdit] = useState(false);
-  const [deleteSubscription, setDeleteSubscription] = useState(false);
-  const [openAlert, setOpenAlert] = useState(false);
-  const [loadingEdit, setLoadingEdit] = useState(false);
-  const [error, setError] = useState(false);
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
+  const [file, setFile] = useState<File | null>(null)
+  const [progress, setProgress] = useState('Choose new image')
+  const [newImageUrl, setNewImageUrl] = useState<null | string>(null)
+  const [preview, setPreview] = useState('')
+  const [subscriptionDelete, setSubscriptionDelete] = useState(false)
+  const [subscriptionEdit, setSubscriptionEdit] = useState(false)
+  const [deleteSubscription, setDeleteSubscription] = useState(false)
+  const [openAlert, setOpenAlert] = useState(false)
+  const [loadingEdit, setLoadingEdit] = useState(false)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
-    dispatch(fetchSubscriptionsList());
-  }, [fetchedSubscriptions.length, dispatch]);
+    dispatch(fetchSubscriptionsList())
+  }, [fetchedSubscriptions.length, dispatch])
 
   useEffect(() => {
     if (!file) {
-      return;
+      return
     }
-    const objectUrl = URL.createObjectURL(file);
-    setPreview(objectUrl);
-  }, [file]);
-
-  useEffect(() => {
-    if (deleteSubscription) {
-      handleDeleteSubscription();
-    }
-  });
+    const objectUrl = URL.createObjectURL(file)
+    setPreview(objectUrl)
+  }, [file])
 
   const handleClickDelete = () => {
-    setOpenAlert(true);
-  };
+    setOpenAlert(true)
+  }
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     if (ev.target.files !== null) {
-      setFile(ev.target.files[0]);
+      setFile(ev.target.files[0])
     }
-  };
+  }
 
   const uploadImage = () => {
-    setDisabledSubmit(true);
+    setDisabledSubmit(true)
     if (!file) {
-      setDisabledSubmit(false);
-      setNewImageUrl(null);
-      setProgress('Image is missing');
-      return;
-    } else if (!validTypes.includes(file.type.split('/')[1])) {
-      setDisabledSubmit(false);
-      setProgress('Invalid format');
-      setFile(null);
-      return;
+      setDisabledSubmit(false)
+      setNewImageUrl(null)
+      setProgress('Image is missing')
+      return
     }
-    const storageRef = ref(storage, `images/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    if (!validTypes.includes(file.type.split('/')[1])) {
+      setDisabledSubmit(false)
+      setProgress('Invalid format')
+      setFile(null)
+      return
+    }
+    const storageRef = ref(storage, `images/${file.name}`)
+    const uploadTask = uploadBytesResumable(storageRef, file)
 
     uploadTask.on(
       'state_changed',
       (snapshot) => {
-        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        progress === 100 ? setProgress('Upload is almost done') : setProgress('Uploading...');
-        setFile(null);
+        const uploadProgress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+        if (uploadProgress === 100) {
+          setProgress('Upload is almost done')
+        } else {
+          setProgress('Uploading...')
+        }
+        setFile(null)
       },
-      (error) => {
-        console.log(error);
+      (err) => {
+        console.log(err)
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          setNewImageUrl(url);
-          setProgress('Uploaded image');
-          setDisabledSubmit(false);
-        });
-      }
-    );
-  };
+          setNewImageUrl(url)
+          setProgress('Uploaded image')
+          setDisabledSubmit(false)
+        })
+      },
+    )
+  }
 
   const handleDeleteSubscription = async () => {
-    setDisabledSubmit(true);
-    const user = auth.currentUser;
+    setDisabledSubmit(true)
+    const user = auth.currentUser
     if (user && subscriptionId) {
       try {
-        await deleteDoc(doc(db, 'users', user.uid, 'subscriptions', subscriptionId));
-        setSubscriptionDelete(true);
+        await deleteDoc(doc(db, 'users', user.uid, 'subscriptions', subscriptionId))
+        setSubscriptionDelete(true)
         setTimeout(() => {
-          navigate('/active-subscriptions');
-        }, 1500);
+          navigate('/active-subscriptions')
+        }, 1500)
       } catch (e) {
-        console.error('Error delete subscription: ', e);
+        console.error('Error delete subscription: ', e)
       }
     }
-  };
+  }
+
+  useEffect(() => {
+    if (deleteSubscription) {
+      handleDeleteSubscription()
+    }
+  })
 
   const handleSubmit = async (values: EditValues) => {
-    setLoadingEdit(true);
-    setDisabledSubmit(true);
-    const user = auth.currentUser;
+    setLoadingEdit(true)
+    setDisabledSubmit(true)
+    const user = auth.currentUser
     if (user && values.date) {
-      const { name, price, currency, paymentFrequency, date, id } = values;
+      const { name, price, currency, paymentFrequency, date, id } = values
       try {
         await setDoc(
           doc(db, 'users', user.uid, 'subscriptions', id),
@@ -141,28 +150,27 @@ export const EditSubscription = () => {
             paymentFrequency,
             imageUrl: newImageUrl,
           },
-          { merge: true }
-        );
-        setLoadingEdit(false);
-        setSubscriptionEdit(true);
+          { merge: true },
+        )
+        setLoadingEdit(false)
+        setSubscriptionEdit(true)
         setTimeout(() => {
-          navigate('/active-subscriptions');
-        }, 1500);
+          navigate('/active-subscriptions')
+        }, 1500)
       } catch (e) {
-        setError(true);
-        console.error('Error edit subscription: ', e);
+        setError(true)
+        console.error('Error edit subscription: ', e)
       }
     }
-  };
+  }
 
-  const renderError = (message: string) => <p className={classes.error}>{message}</p>;
-  const disabledInput = disabledSubmit ? classes.inActiveUpload : classes.activeUpload;
+  const renderError = (message: string) => <p className={classes.error}>{message}</p>
+  const disabledInput = disabledSubmit ? classes.inActiveUpload : classes.activeUpload
 
-  if (loading === 'pending') return <Spinner />;
-  if (loading === 'failed') return <h2>Sorry, something went wrong, but we fix it</h2>;
+  if (loading === 'pending') return <Spinner />
 
-  const subscription = fetchedSubscriptions.find((el: Subscription) => el.id === subscriptionId);
-  if (subscription !== undefined) {
+  const subscription = fetchedSubscriptions.find((el: Subscription) => el.id === subscriptionId)
+  if (loading === 'succeeded' && subscription !== undefined) {
     return (
       <Formik
         initialValues={subscription}
@@ -175,24 +183,12 @@ export const EditSubscription = () => {
             <Form className={classes.form}>
               <div className={classes.field}>
                 <label htmlFor='name'>Name</label>
-                <Field
-                  className={classes.input}
-                  type='text'
-                  name='name'
-                  id='name'
-                  placeholder='Spotify'
-                />
+                <Field className={classes.input} type='text' name='name' id='name' placeholder='Spotify' />
                 <ErrorMessage name='name' render={renderError} />
               </div>
               <div className={classes.field}>
                 <label htmlFor='price'>Price</label>
-                <Field
-                  className={classes.input}
-                  type='text'
-                  name='price'
-                  id='price'
-                  placeholder='200'
-                />
+                <Field className={classes.input} type='text' name='price' id='price' placeholder='200' />
                 <ErrorMessage name='price' render={renderError} />
               </div>
               <div className={classes.field}>
@@ -201,14 +197,8 @@ export const EditSubscription = () => {
               </div>
               <div className={classes.field}>
                 <label htmlFor='currency'>Currency</label>
-                <Field
-                  className={classes.input}
-                  type='text'
-                  as='select'
-                  name='currency'
-                  id='currency'
-                >
-                  <option value={''}>Select currency</option>
+                <Field className={classes.input} type='text' as='select' name='currency' id='currency'>
+                  <option value=''>Select currency</option>
                   {currenciesOptions}
                 </Field>
 
@@ -216,13 +206,8 @@ export const EditSubscription = () => {
               </div>
               <div className={classes.field}>
                 <label htmlFor='paymentFrequency'>Payment frequency</label>
-                <Field
-                  className={classes.input}
-                  as='select'
-                  id='frequepaymentFrequencyncy'
-                  name='paymentFrequency'
-                >
-                  <option value={''}>Select frequency</option>
+                <Field className={classes.input} as='select' id='frequepaymentFrequencyncy' name='paymentFrequency'>
+                  <option value=''>Select frequency</option>
                   {paymentFrequencyOptions}
                 </Field>
                 <ErrorMessage name='paymentFrequency' render={renderError} />
@@ -255,33 +240,23 @@ export const EditSubscription = () => {
                     </div>
                   </div>
                 </label>
-                <button
-                  type='button'
-                  onClick={uploadImage}
-                  className={classes.buttonUpload}
-                  disabled={disabledSubmit}
-                >
+                <button type='button' onClick={uploadImage} className={classes.buttonUpload} disabled={disabledSubmit}>
                   {uploadText}
                 </button>
               </div>
-              <button
-                name='button'
-                type='submit'
-                className={classes.buttonSubmit}
-                disabled={disabledSubmit}
-              >
+              <button name='button' type='submit' className={classes.buttonSubmit} disabled={disabledSubmit}>
                 {error
                   ? 'Something went wrong, but we fix it'
                   : (loadingEdit && (
                       <div className={classes.loaderContainer}>
                         Loading...
-                        <div className={classes.loader}></div>
+                        <div className={classes.loader} />
                       </div>
                     )) ||
                     'Edit Your Subscription'}
               </button>
               <button
-                type='reset'
+                type='button'
                 className={classes.deleteSubscription}
                 onClick={handleClickDelete}
                 disabled={disabledSubmit}
@@ -298,14 +273,12 @@ export const EditSubscription = () => {
                 subscriptionDelete={subscriptionDelete}
                 setSubscriptionDelete={setSubscriptionDelete}
               />
-              <NotificationEdit
-                subscriptionEdit={subscriptionEdit}
-                setSubscriptionEdit={setSubscriptionEdit}
-              />
+              <NotificationEdit subscriptionEdit={subscriptionEdit} setSubscriptionEdit={setSubscriptionEdit} />
             </Form>
           </section>
         )}
       </Formik>
-    );
+    )
   }
-};
+  return <h2>Sorry, something went wrong, but we fix it</h2>
+}

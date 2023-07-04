@@ -1,26 +1,23 @@
-import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import MuiAlert, { AlertProps } from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
+import Stack from '@mui/material/Stack'
+import * as React from 'react'
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
-});
-interface NotificationEdit {
-  subscriptionEdit: boolean;
-  setSubscriptionEdit: (value: boolean) => void;
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>((props, ref) => (
+  <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
+))
+interface NotificationEditProps {
+  subscriptionEdit: boolean
+  setSubscriptionEdit: (value: boolean) => void
 }
-export const NotificationEdit: React.FC<NotificationEdit> = ({
-  subscriptionEdit,
-  setSubscriptionEdit,
-}) => {
+export const NotificationEdit: React.FC<NotificationEditProps> = ({ subscriptionEdit, setSubscriptionEdit }) => {
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
-      return;
+      return
     }
 
-    setSubscriptionEdit(false);
-  };
+    setSubscriptionEdit(false)
+  }
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar open={subscriptionEdit} autoHideDuration={6000} onClose={handleClose}>
@@ -29,5 +26,5 @@ export const NotificationEdit: React.FC<NotificationEdit> = ({
         </Alert>
       </Snackbar>
     </Stack>
-  );
-};
+  )
+}

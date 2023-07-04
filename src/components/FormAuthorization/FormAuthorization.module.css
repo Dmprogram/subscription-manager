@@ -1,11 +1,12 @@
 .container {
-  margin: 60px auto;
-  max-width: 628px;
   display: flex;
+  flex-flow: column nowrap;
   align-items: center;
-  flex-wrap: nowrap;
-  flex-direction: column;
+
+  max-width: 628px;
+  margin: 60px auto;
   padding: 40px;
+
   background-color: #2b2c2e;
   border-radius: 20px;
 }
@@ -17,8 +18,8 @@
 
 .description {
   margin-top: 3px;
-  color: #9b9a9a;
   margin-bottom: 30px;
+  color: #9b9a9a;
 }
 
 .form {
@@ -34,12 +35,13 @@
 }
 
 .input {
+  width: 100%;
   margin: 5px 0;
   padding: 10px;
-  width: 100%;
-  padding: 10px;
+
+  border: 2px solid rgb(226 224 224);
   border-radius: 10px;
-  border: 2px solid rgb(226, 224, 224);
+
   transition: 0.5s border-color;
 }
 
@@ -48,19 +50,21 @@
 }
 
 .input:focus {
-  background-color: rgb(229, 230, 232);
-  border: 2px solid rgb(14, 108, 156);
+  background-color: rgb(229 230 232);
+  border: 2px solid rgb(14 108 156);
   outline: none;
 }
 
 .inputSubmit {
   width: 100%;
-  background-color: #1159be;
-  border: none;
   margin-top: 20px;
   padding: 15px 0;
-  border-radius: 10px;
+
   color: #f9f5f5;
+
+  background-color: #1159be;
+  border: none;
+  border-radius: 10px;
 }
 
 .inputSubmit:hover {
@@ -76,52 +80,61 @@
   color: #096bde;
   text-decoration: none;
 }
+
 .link:hover {
   text-decoration: underline;
 }
 
 .error {
-  margin-left: 5px;
-  color: rgb(223, 33, 33);
   display: flex;
   justify-content: flex-start;
+  margin-left: 5px;
+  color: rgb(223 33 33);
 }
 
 .authError {
-  font-size: 1.2rem;
-  margin-left: 5px;
-  color: rgb(223, 33, 33);
   display: flex;
   justify-content: center;
+
+  margin-left: 5px;
+
+  font-size: 1.2rem;
+  color: rgb(223 33 33);
 }
 
-@media (min-device-width: 320px) and (max-device-width: 568px) {
+@media (device-width >= 320px) and (device-width <= 568px) {
   .container {
     margin: 40px 10px;
     padding: 20px 15px;
   }
+
   .header {
     font-size: 1.6rem;
   }
+
   .description {
-    font-size: 0.95rem;
     margin-bottom: 20px;
+    font-size: 0.95rem;
   }
+
   .registration {
     font-size: 1rem;
   }
+
   .inputSubmit {
     margin-top: 10px;
   }
 }
 
-@media (min-device-width: 320px) and (max-device-width: 360px) {
+@media (device-width >= 320px) and (device-width <= 360px) {
   .header {
     font-size: 1.3rem;
   }
+
   .description {
     font-size: 0.8rem;
   }
+
   .registration {
     font-size: 0.9rem;
   }

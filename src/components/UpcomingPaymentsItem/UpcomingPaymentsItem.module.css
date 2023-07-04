@@ -1,11 +1,13 @@
 .payment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   margin-top: 15px;
   padding: 15px 30px;
+
   background-color: #2b2c2e;
   border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .paymentTitle {
@@ -29,9 +31,9 @@
 }
 
 .paymentDate {
-  margin-top: 10px;
   display: flex;
   align-items: center;
+  margin-top: 10px;
   font-size: 1rem;
 }
 
@@ -42,14 +44,17 @@
 }
 
 .loader {
-  margin-right: 5px;
+  display: inline-block;
+
+  box-sizing: border-box;
   width: 20px;
   height: 20px;
+  margin-right: 5px;
+
   border: 3px solid #d5c818;
   border-bottom-color: transparent;
   border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
+
   animation: rotation 1s linear infinite;
 }
 
@@ -57,32 +62,37 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
 
-@media (min-device-width: 320px) and (max-device-width: 568px) {
+@media (device-width >= 320px) and (device-width <= 568px) {
   .payment {
-    padding: 10px 15px;
     margin-top: 10px;
+    padding: 10px 15px;
   }
+
   .paymentTitle,
   .paymentDate {
     font-size: 0.8rem;
   }
+
   .paymentDate {
     margin-top: 7px;
   }
+
   .paymentValue {
     font-size: 1.1rem;
   }
 }
 
-@media (min-device-width: 320px) and (max-device-width: 359px) {
+@media (device-width >= 320px) and (device-width <= 359px) {
   .payment {
     padding: 10px;
   }
+
   .paymentValue {
     font-size: 0.9rem;
   }

@@ -1,19 +1,15 @@
 .header {
-  height: 300px;
-  max-width: 1000px;
-  background: linear-gradient(
-    90deg,
-    rgba(31, 110, 75, 1) 0%,
-    rgba(26, 93, 64, 1) 51%,
-    rgba(18, 68, 45, 1) 100%
-  );
-
-  border-radius: 10px;
-  padding: 30px;
-  margin: 60px auto 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  max-width: 1000px;
+  height: 300px;
+  margin: 60px auto 0;
+  padding: 30px;
+
+  background: linear-gradient(90deg, rgb(31 110 75 / 100%) 0%, rgb(26 93 64 / 100%) 51%, rgb(18 68 45 / 100%) 100%);
+  border-radius: 10px;
 }
 
 .title {
@@ -22,84 +18,100 @@
 
 .footer {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .money {
-  font-size: 1.8rem;
   margin: 5px 0;
+  font-size: 1.8rem;
 }
 
 .link {
-  padding: 15px;
-  background-color: #505051;
-  border-radius: 20px;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
+
+  padding: 15px;
+
   font-size: 1.2rem;
   color: #f9f5f5;
   text-decoration: none;
+
+  background-color: #505051;
+  border-radius: 20px;
 }
 
 .link:hover {
-  background-color: rgb(57, 57, 57);
+  background-color: rgb(57 57 57);
 }
 
 .arrowRight {
-  margin-left: 5px;
   transform: rotate(45deg);
+
   width: 12px;
   height: 12px;
+  margin-left: 5px;
+
   border-top: 4px solid #f9f5f5;
   border-right: 4px solid #f9f5f5;
 }
 
-@media (min-device-width: 360px) and (max-device-width: 568px) {
+@media (device-width >= 360px) and (device-width <= 568px) {
   .header {
-    padding: 20px;
     height: 180px;
     margin: 40px auto 0;
+    padding: 20px;
   }
+
   .title {
     font-size: 1.3rem;
   }
+
   .link {
-    font-size: 0.8rem;
     padding: 10px;
+    font-size: 0.8rem;
   }
+
   .money {
     font-size: 1rem;
   }
+
   .arrowRight {
-    margin-left: 3px;
     width: 8px;
     height: 8px;
+    margin-left: 3px;
+
     border-top: 3px solid #f9f5f5;
     border-right: 3px solid #f9f5f5;
   }
 }
-@media (min-device-width: 320px) and (max-device-width: 359px) {
+
+@media (device-width >= 320px) and (device-width <= 359px) {
   .header {
+    height: 160px;
     margin: 40px auto 0;
     padding: 15px;
-    height: 160px;
   }
+
   .title {
     font-size: 1.1rem;
   }
+
   .link {
-    font-size: 0.8rem;
     padding: 10px;
+    font-size: 0.8rem;
   }
+
   .money {
     font-size: 0.9rem;
   }
+
   .arrowRight {
-    margin-left: 3px;
     width: 6px;
     height: 6px;
+    margin-left: 3px;
+
     border-top: 2px solid #f9f5f5;
     border-right: 2px solid #f9f5f5;
   }

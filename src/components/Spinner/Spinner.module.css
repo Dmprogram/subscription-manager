@@ -2,34 +2,38 @@
   0% {
     transform: translate(-50%, -50%) rotate(0deg);
   }
+
   100% {
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+
 .spinner div {
+  top: 55px;
+  left: 55px;
+
+  box-sizing: content-box;
   width: 46px;
   height: 46px;
+
   border: 4px solid #d8ed1e;
   border-top-color: transparent;
   border-radius: 50%;
+
+  animation: spinner 0.7874s linear infinite;
 }
-.spinner div {
-  animation: spinner 0.7874015748031495s linear infinite;
-  top: 55.00000000000001px;
-  left: 55.00000000000001px;
-}
+
 .container {
   overflow: hidden;
-  padding-top: 300px;
-  padding-left: 52px;
   display: flex;
   justify-content: center;
+
+  padding-top: 300px;
+  padding-left: 52px;
 }
+
 .spinner {
+  transform-origin: 0 0;
   transform: translateZ(0) scale(1);
   backface-visibility: hidden;
-  transform-origin: 0 0;
-}
-.spinner div {
-  box-sizing: content-box;
 }

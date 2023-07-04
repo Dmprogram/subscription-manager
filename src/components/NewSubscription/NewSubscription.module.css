@@ -1,11 +1,12 @@
 .container {
-  margin: 60px auto;
-  max-width: 628px;
-  background-color: #2b2c2e;
   display: flex;
+  flex-flow: column nowrap;
   align-items: center;
-  flex-wrap: nowrap;
-  flex-direction: column;
+
+  max-width: 628px;
+  margin: 60px auto;
+
+  background-color: #2b2c2e;
   border-radius: 20px;
 }
 
@@ -15,18 +16,20 @@
 }
 
 .form {
-  margin-top: 30px;
-  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  width: 80%;
+  margin-top: 30px;
 }
 
 .field {
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  width: 100%;
   margin-bottom: 20px;
 }
 
@@ -35,8 +38,10 @@
   height: 40px;
   margin: 5px 0;
   padding: 10px;
+
+  border: 2px solid rgb(226 224 224);
   border-radius: 10px;
-  border: 2px solid rgb(226, 224, 224);
+
   transition: 0.5s border-color;
 }
 
@@ -45,40 +50,37 @@
 }
 
 .input:focus {
-  background-color: rgb(229, 230, 232);
-  border: 2px solid rgb(14, 108, 156);
+  background-color: rgb(229 230 232);
+  border: 2px solid rgb(14 108 156);
   outline: none;
 }
-.input::-webkit-input-placeholder {
-  color: #c8c8c8;
-}
-.input:-moz-placeholder {
-  color: #c8c8c8;
-}
-.input::-moz-placeholder {
-  color: #c8c8c8;
-}
-.input:-ms-input-placeholder {
+
+.input::placeholder {
   color: #c8c8c8;
 }
 
 .upload {
-  width: 100%;
-  font-size: 1rem;
   display: flex;
-  margin-bottom: 40px;
   flex-direction: row;
   justify-content: space-between;
+
+  width: 100%;
+  margin-bottom: 40px;
+
+  font-size: 1rem;
 }
 
 .activeUpload {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 60%;
   height: 40px;
+
   background-color: #419152;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
   border-radius: 10px;
 }
 
@@ -87,36 +89,44 @@
 }
 
 .inActiveUpload {
+  cursor: not-allowed;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 60%;
   height: 40px;
+
   background-color: #4d4747;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: not-allowed;
   border-radius: 10px;
 }
 
 .inputImage {
   z-index: -1;
-  opacity: 0;
+
   display: block;
+
   width: 0;
   height: 0;
+
+  opacity: 0;
 }
 
 .text {
-  text-align: center;
   width: 100%;
+  text-align: center;
 }
 
 .buttonUpload {
-  color: #f9f5f5;
   width: 30%;
   height: 40px;
+
+  color: #f9f5f5;
+
   background-color: #1e6fe1;
-  border-radius: 10px;
   border: none;
+  border-radius: 10px;
 }
 
 .buttonUpload:hover {
@@ -124,8 +134,8 @@
 }
 
 .buttonUpload:disabled {
-  background-color: #4d4747;
   cursor: not-allowed;
+  background-color: #4d4747;
 }
 
 .imageContainer {
@@ -143,37 +153,42 @@
 
 .buttonSubmit {
   width: 100%;
+  padding: 15px 0;
+
+  color: #f9f5f5;
+
   background-color: #1159be;
   border: none;
-  padding: 15px 0;
   border-radius: 10px;
-  color: #f9f5f5;
 }
 
 .buttonSubmit:hover {
   cursor: pointer;
   background-color: #093169;
 }
+
 .buttonSubmit:disabled {
-  background-color: #4d4747;
   cursor: not-allowed;
+  background-color: #4d4747;
 }
 
 .error {
-  margin: 0;
-  color: rgb(223, 33, 33);
   display: flex;
   justify-content: flex-start;
+  margin: 0;
+  color: rgb(223 33 33);
 }
 
 .clearButton {
   width: 100%;
   margin: 20px 0 40px;
+  padding: 15px 0;
+
+  color: #f9f5f5;
+
   background-color: #757474;
   border: none;
-  padding: 15px 0;
   border-radius: 10px;
-  color: #f9f5f5;
 }
 
 .clearButton:hover {
@@ -182,24 +197,28 @@
 }
 
 .clearButton:disabled {
-  background-color: #4d4747;
   cursor: not-allowed;
+  background-color: #4d4747;
 }
+
 .loaderContainer {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .loader {
-  margin-left: 5px;
+  display: inline-block;
+
+  box-sizing: border-box;
   width: 15px;
   height: 15px;
+  margin-left: 5px;
+
   border: 3px solid #d5c818;
   border-bottom-color: transparent;
   border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
+
   animation: rotation 1s linear infinite;
 }
 
@@ -207,27 +226,32 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
 
-@media (min-device-width: 320px) and (max-device-width: 568px) {
+@media (device-width >= 320px) and (device-width <= 568px) {
   .container {
     margin: 40px auto;
   }
+
   .header {
     margin: 0;
     margin-top: 30px;
   }
+
   .form {
     margin-top: 25px;
   }
+
   .image {
     width: 15px;
     height: 15px;
     margin-left: 10px;
   }
+
   .upload {
     font-size: 0.9rem;
   }

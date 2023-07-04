@@ -1,28 +1,31 @@
-import classes from './UpcomingPaymentsItem.module.css';
-import applicationIcon from '../../assets/applicationIcon.png';
-import calendar from '../../assets/calendar.png';
-import money from '../../assets/money.png';
-import { formatExpenses } from '../utils/formatExpenses';
-import { formatDate } from '../utils/formatDate';
-import { useState } from 'react';
-import { Subscription } from '../store/types';
+import { useState } from 'react'
+
+import classes from './UpcomingPaymentsItem.module.css'
+
+import applicationIcon from '../../assets/applicationIcon.png'
+import calendar from '../../assets/calendar.png'
+import money from '../../assets/money.png'
+import { Subscription } from '../store/types'
+import { formatDate } from '../utils/formatDate'
+import { formatExpenses } from '../utils/formatExpenses'
+
 export const UpcomingPaymentsItem = (props: Subscription) => {
-  const [isLoadedImage, setIsLoadedImage] = useState(false);
+  const [isLoadedImage, setIsLoadedImage] = useState(false)
 
   const onLoad = () => {
-    setIsLoadedImage(true);
-  };
+    setIsLoadedImage(true)
+  }
 
-  const { date, name, price, currency, imageUrl } = props;
-  const { year, month, day } = date;
-  const { formatDay, formatMonth } = formatDate(year, month, day);
+  const { date, name, price, currency, imageUrl } = props
+  const { year, month, day } = date
+  const { formatDay, formatMonth } = formatDate(year, month, day)
   return (
     <div className={classes.payment}>
       <div>
         <div className={classes.paymentTitle}>
           {imageUrl ? (
             <div className={classes.imageContainer}>
-              {isLoadedImage ? null : <div className={classes.loader}></div>}
+              {isLoadedImage ? null : <div className={classes.loader} />}
               <img
                 src={imageUrl}
                 alt='icon'
@@ -48,5 +51,5 @@ export const UpcomingPaymentsItem = (props: Subscription) => {
         {formatExpenses(price, currency)}
       </div>
     </div>
-  );
-};
+  )
+}

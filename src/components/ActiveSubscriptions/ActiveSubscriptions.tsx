@@ -1,27 +1,31 @@
-import classes from './ActiveSubscriptions.module.css';
-import { Link } from 'react-router-dom';
-import { SubscriptionItem } from '../SubscriptionItem/SubscriptionItem';
-import { useEffect } from 'react';
-import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
-import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks';
-import { SubscriptionsSkeleton } from '../SubscriptionsSkeleton/SubscriptionsSkeleton';
-import { SelectSortType } from '../SelectSortType/SelectSortType';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { Subscription } from '../store/types';
+// eslint-disable-next-line import/no-unresolved
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+
+import classes from './ActiveSubscriptions.module.css'
+
+import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks'
+import { SelectSortType } from '../SelectSortType/SelectSortType'
+import { fetchSubscriptionsList } from '../store/subscriptionsListSlice'
+import { Subscription } from '../store/types'
+import { SubscriptionItem } from '../SubscriptionItem/SubscriptionItem'
+import { SubscriptionsSkeleton } from '../SubscriptionsSkeleton/SubscriptionsSkeleton'
+
 export const ActiveSubscriptions = () => {
-  const dispatch = useAppDispatch();
-  const { activeSubscriptions, loading, error, inputSearch, searchSubsciptions } = useAppSelector(
-    (state) => state.subscriptionsList
-  );
+  const dispatch = useAppDispatch()
+  const { activeSubscriptions, loading, inputSearch, searchSubsciptions } = useAppSelector(
+    (state) => state.subscriptionsList,
+  )
   const [parent] = useAutoAnimate({
     duration: 300,
     easing: 'ease-in-out',
     disrespectUserMotionPreference: false,
-  });
+  })
 
   useEffect(() => {
-    dispatch(fetchSubscriptionsList());
-  }, [dispatch]);
+    dispatch(fetchSubscriptionsList())
+  }, [dispatch])
 
   if (loading === 'pending')
     return (
@@ -36,7 +40,7 @@ export const ActiveSubscriptions = () => {
         </div>
         <SubscriptionsSkeleton />
       </section>
-    );
+    )
   return inputSearch.length !== 0 ? (
     <section className={classes.payments}>
       <header className={classes.results}>
@@ -55,11 +59,7 @@ export const ActiveSubscriptions = () => {
   ) : (
     <section className={classes.payments}>
       <header className={classes.header}>
-        <h3>
-          {activeSubscriptions.length !== 0
-            ? 'ACTIVE SUBSCRIPTIONS'
-            : 'THERE IS NO ACTIVE SUBSCRIPTION'}
-        </h3>
+        <h3>{activeSubscriptions.length !== 0 ? 'ACTIVE SUBSCRIPTIONS' : 'THERE IS NO ACTIVE SUBSCRIPTION'}</h3>
       </header>
       <div className={classes.paymentsTitle}>
         <Link to='/new-subscription' className={classes.link}>
@@ -77,5 +77,5 @@ export const ActiveSubscriptions = () => {
         ))}
       </div>
     </section>
-  );
-};
+  )
+}

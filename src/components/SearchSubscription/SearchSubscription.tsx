@@ -1,23 +1,25 @@
-import classes from './SearchSubscription.module.css';
-import searchIcon from '..//../assets/searchIcon.png';
-import cross from '..//../assets/crossLight.png';
-import { useAppDispatch } from '../../hooks/ReduxHooks';
-import { useAppSelector } from '../../hooks/ReduxHooks';
-import { findSubscription, clearSearchAndSortFields } from '../store/subscriptionsListSlice';
-import { useEffect } from 'react';
-import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
+import { useEffect } from 'react'
+
+import classes from './SearchSubscription.module.css'
+
+import cross from '../../assets/crossLight.png'
+import searchIcon from '../../assets/searchIcon.png'
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks'
+
+import { findSubscription, clearSearchAndSortFields, fetchSubscriptionsList } from '../store/subscriptionsListSlice'
+
 export const SearchSubscription = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchSubscriptionsList());
+    dispatch(fetchSubscriptionsList())
 
     return () => {
-      dispatch(clearSearchAndSortFields());
-    };
-  }, [dispatch]);
+      dispatch(clearSearchAndSortFields())
+    }
+  }, [dispatch])
 
-  const { inputSearch } = useAppSelector((state) => state.subscriptionsList);
+  const { inputSearch } = useAppSelector((state) => state.subscriptionsList)
   return (
     <div className={classes.searchField}>
       <label htmlFor='search' className={classes.searchTitle}>
@@ -34,13 +36,15 @@ export const SearchSubscription = () => {
           value={inputSearch}
           onChange={(ev) => dispatch(findSubscription({ inputSearch: ev.target.value }))}
         />
-        <img
-          src={cross}
-          alt='cross'
-          className={classes.crossIcon}
+        <div
+          role='button'
+          tabIndex={0}
           onClick={() => dispatch(clearSearchAndSortFields())}
-        />
+          onKeyDown={() => dispatch(clearSearchAndSortFields())}
+        >
+          <img src={cross} alt='cross' className={classes.crossIcon} />
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}

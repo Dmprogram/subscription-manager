@@ -1,11 +1,9 @@
-import classes from './Spinner.module.css';
+import classes from './Spinner.module.css'
 
-export const Spinner = () => {
-  return (
-    <div className={classes.container}>
-      <div className={classes.spinner}>
-        <div />
-      </div>
+export const Spinner = () => (
+  <div className={classes.container}>
+    <div className={classes.spinner}>
+      <div />
     </div>
-  );
-};
+  </div>
+)

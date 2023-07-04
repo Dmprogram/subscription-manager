@@ -1,15 +1,16 @@
 .container {
-  background-color: rgb(35, 34, 34);
   height: 80px;
-  border-radius: 10px;
-  padding: 15px 30px;
   margin-top: 15px;
+  padding: 15px 30px;
+
+  background-color: rgb(35 34 34);
+  border-radius: 10px;
 }
 
 .containerBox {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .leftContent {
@@ -20,15 +21,15 @@
   width: 80px;
 }
 
-@media (min-device-width: 320px) and (max-device-width: 568px) {
+@media (device-width >= 320px) and (device-width <= 568px) {
   .container {
-    padding: 5px 15px;
-    margin-top: 10px;
     height: 67px;
+    margin-top: 10px;
+    padding: 5px 15px;
   }
 }
 
-@media (min-device-width: 320px) and (max-device-width: 359px) {
+@media (device-width >= 320px) and (device-width <= 359px) {
   .container {
     padding: 5px 10px;
   }

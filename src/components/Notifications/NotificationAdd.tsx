@@ -1,29 +1,27 @@
-import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { Link } from 'react-router-dom';
-import classes from './NotificationAdd.module.css';
+import MuiAlert, { AlertProps } from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
+import Stack from '@mui/material/Stack'
+import * as React from 'react'
+import { Link } from 'react-router-dom'
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
-});
+import classes from './NotificationAdd.module.css'
 
-interface NotificationAdd {
-  subscriptionAdded: boolean;
-  setSubscriptionAdded: (value: boolean) => void;
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>((props, ref) => (
+  <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
+))
+
+interface NotificationAddProps {
+  subscriptionAdded: boolean
+  setSubscriptionAdded: (value: boolean) => void
 }
 
-export const NotificationAdd: React.FC<NotificationAdd> = ({
-  subscriptionAdded,
-  setSubscriptionAdded,
-}) => {
+export const NotificationAdd: React.FC<NotificationAddProps> = ({ subscriptionAdded, setSubscriptionAdded }) => {
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
-      return;
+      return
     }
-    setSubscriptionAdded(false);
-  };
+    setSubscriptionAdded(false)
+  }
 
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
@@ -36,5 +34,5 @@ export const NotificationAdd: React.FC<NotificationAdd> = ({
         </Alert>
       </Snackbar>
     </Stack>
-  );
-};
+  )
+}

@@ -1,17 +1,20 @@
-import * as React from 'react';
-import Select, { SelectStaticProps } from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
-import IconButton from '@mui/joy/IconButton';
-import CloseRounded from '@mui/icons-material/CloseRounded';
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
-import { addSortByParameter } from '../store/subscriptionsListSlice';
-import { useRef } from 'react';
+import CloseRounded from '@mui/icons-material/CloseRounded'
+import IconButton from '@mui/joy/IconButton'
+import Option from '@mui/joy/Option'
+import Select, { SelectStaticProps } from '@mui/joy/Select'
+import * as React from 'react'
+
+import { useRef } from 'react'
+
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks'
+import { addSortByParameter } from '../store/subscriptionsListSlice'
+
 export const SelectSortType = () => {
-  const windowWidth = useRef(window.innerWidth);
-  const { sortByParameter } = useAppSelector((state) => state.subscriptionsList);
-  const minWidth = windowWidth.current < 568 ? 120 : 160;
-  const dispatch = useAppDispatch();
-  const action: SelectStaticProps['action'] = React.useRef(null);
+  const windowWidth = useRef(window.innerWidth)
+  const { sortByParameter } = useAppSelector((state) => state.subscriptionsList)
+  const minWidth = windowWidth.current < 568 ? 120 : 160
+  const dispatch = useAppDispatch()
+  const action: SelectStaticProps['action'] = React.useRef(null)
   return (
     <Select
       color='neutral'
@@ -20,8 +23,8 @@ export const SelectSortType = () => {
       value={sortByParameter}
       size={windowWidth.current < 568 ? 'sm' : 'md'}
       placeholder='Sort by...'
-      onChange={(e, newValue) => {
-        dispatch(addSortByParameter({ sortByParameter: newValue as string | null }));
+      onChange={(_, newValue) => {
+        dispatch(addSortByParameter({ sortByParameter: newValue as string | null }))
       }}
       {...(sortByParameter && {
         endDecorator: (
@@ -30,11 +33,11 @@ export const SelectSortType = () => {
             variant='plain'
             color='neutral'
             onMouseDown={(event) => {
-              event.stopPropagation();
+              event.stopPropagation()
             }}
             onClick={() => {
-              dispatch(addSortByParameter({ sortByParameter: null }));
-              action.current?.focusVisible();
+              dispatch(addSortByParameter({ sortByParameter: null }))
+              action.current?.focusVisible()
             }}
           >
             <CloseRounded />
@@ -44,7 +47,7 @@ export const SelectSortType = () => {
       })}
       sx={{
         height: 2,
-        minWidth: minWidth,
+        minWidth,
       }}
     >
       <Option value='dateToOld'>Newest to Oldest</Option>
@@ -54,5 +57,5 @@ export const SelectSortType = () => {
       <Option value='alphabetToZ'>Alphabet to Z</Option>
       <Option value='alphabetToA'>Alphabet to A</Option>
     </Select>
-  );
-};
+  )
+}

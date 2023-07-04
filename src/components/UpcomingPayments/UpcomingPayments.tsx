@@ -1,27 +1,30 @@
-import classes from './UpcomingPayments.module.css';
-import { UpcomingPaymentsItem } from '../UpcomingPaymentsItem/UpcomingPaymentsItem';
-import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks';
-import { useEffect } from 'react';
-import { fetchSubscriptionsList } from '../store/subscriptionsListSlice';
-import { UpcomingPaymentsSkeleton } from '../UpcomingPaymentsSkeleton/UpcomingPaymentsSkeleton';
-import { clearAverageExpenses } from '../store/subscriptionsListSlice';
-import { Subscription } from '../store/types';
+import { useEffect } from 'react'
+
+import classes from './UpcomingPayments.module.css'
+
+import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks'
+import { fetchSubscriptionsList, clearAverageExpenses } from '../store/subscriptionsListSlice'
+
+import { Subscription } from '../store/types'
+import { UpcomingPaymentsItem } from '../UpcomingPaymentsItem/UpcomingPaymentsItem'
+import { UpcomingPaymentsSkeleton } from '../UpcomingPaymentsSkeleton/UpcomingPaymentsSkeleton'
+
 export const UpcomingPayments = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(fetchSubscriptionsList());
+    dispatch(fetchSubscriptionsList())
     return () => {
-      dispatch(clearAverageExpenses());
-    };
-  }, [dispatch]);
-  const { upcomingPayments, loading, error } = useAppSelector((state) => state.subscriptionsList);
+      dispatch(clearAverageExpenses())
+    }
+  }, [dispatch])
+  const { upcomingPayments, loading } = useAppSelector((state) => state.subscriptionsList)
   if (loading === 'pending')
     return (
       <section className={classes.payments}>
         <h3 className={classes.paymentsTitle}>UPCOMING PAYMENTS</h3>
         <UpcomingPaymentsSkeleton />
       </section>
-    );
+    )
   return (
     <section className={classes.payments}>
       <h3 className={classes.paymentsTitle}>
@@ -31,5 +34,5 @@ export const UpcomingPayments = () => {
         <UpcomingPaymentsItem key={subscription.id} {...subscription} />
       ))}
     </section>
-  );
-};
+  )
+}

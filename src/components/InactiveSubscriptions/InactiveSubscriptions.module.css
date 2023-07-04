@@ -1,28 +1,27 @@
 .payments {
-  margin: 60px auto;
-  max-width: 1000px;
   display: flex;
   flex-direction: column;
+  max-width: 1000px;
+  margin: 60px auto;
 }
 
 .header {
   align-self: center;
-  font-size: 1.4rem;
   margin-bottom: 20px;
+  font-size: 1.4rem;
 }
 
 .headerLoading {
   align-self: center;
-  font-size: 1.4rem;
   margin-bottom: 80px;
+  font-size: 1.4rem;
 }
 
 .paymentsTitle {
-  color: #e6e3e3;
-  display: flex;
-  margin: 20px 0 10px;
   display: flex;
   justify-content: flex-end;
+  margin: 20px 0 10px;
+  color: #e6e3e3;
 }
 
 .results {
@@ -30,10 +29,12 @@
 }
 
 .link {
+  padding-bottom: 2px;
+
   font-size: 1.4rem;
   color: #979292;
   text-decoration: none;
-  padding-bottom: 2px;
+
   border-bottom: 1px solid #979292;
 }
 
@@ -48,20 +49,23 @@
   color: #d4e511;
 }
 
-@media (min-device-width: 320px) and (max-device-width: 568px) {
+@media (device-width >= 320px) and (device-width <= 568px) {
   .header,
   .headerLoading,
   .results {
     font-size: 1rem;
   }
+
   .payments {
     margin: 40px auto;
   }
+
   .paymentsTitle {
     margin: 25px 0 5px;
   }
+
   .subscriptionNotFound {
-    font-size: 1.1rem;
     margin-top: 10px;
+    font-size: 1.1rem;
   }
 }
