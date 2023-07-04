@@ -14,14 +14,17 @@ import { NotificationAdd } from '../Notifications/NotificationAdd';
 import { validTypes } from '../utils/validTypesImages';
 import { NewSubscriptionValues } from './types';
 export const NewSubscription = () => {
-  const [disabledImageChanges, setDisabledImageIChanges] = useState(false);
+  const windowWidth = useRef(window.innerWidth);
+  const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload';
+
   const [disabledSubmit, setDisabledSubmit] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState('Choose an image');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState<null | string>(null);
   const [preview, setPreview] = useState('');
   const [subscriptionAdded, setSubscriptionAdded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (!file) {
@@ -30,9 +33,6 @@ export const NewSubscription = () => {
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
   }, [file]);
-
-  const windowWidth = useRef(window.innerWidth);
-  const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload';
 
   const handleSubmit = async (values: NewSubscriptionValues, resetForm: () => void) => {
     setLoading(true);
@@ -52,18 +52,17 @@ export const NewSubscription = () => {
           imageUrl,
           status: true,
         });
-      } catch (e) {
+        setLoading(false);
+        setImageUrl('');
+        setSubscriptionAdded(true);
+        setFile(null);
         setDisabledSubmit(false);
+        setProgress('Choose an image');
+        resetForm();
+      } catch (e) {
+        setError(true);
         console.error('Error adding subscription: ', e);
       }
-      setLoading(false);
-      setImageUrl('');
-      setSubscriptionAdded(true);
-      setFile(null);
-      setDisabledSubmit(false);
-      setDisabledImageIChanges(false);
-      setProgress('Choose an image');
-      resetForm();
     }
   };
 
@@ -73,15 +72,13 @@ export const NewSubscription = () => {
     }
   };
   const uploadImage = () => {
-    setDisabledImageIChanges(true);
     setDisabledSubmit(true);
     if (!file) {
-      setDisabledImageIChanges(false);
       setDisabledSubmit(false);
+      setImageUrl(null);
       setProgress('Image is missing');
       return;
     } else if (!validTypes.includes(file.type.split('/')[1])) {
-      setDisabledImageIChanges(false);
       setDisabledSubmit(false);
       setProgress('Invalid format');
       setFile(null);
@@ -99,7 +96,6 @@ export const NewSubscription = () => {
       },
       (error) => {
         console.log(error);
-        setDisabledImageIChanges(false);
         setDisabledSubmit(false);
       },
       () => {
@@ -124,7 +120,7 @@ export const NewSubscription = () => {
   };
 
   const renderError = (message: string) => <p className={classes.error}>{message}</p>;
-  const disabledInput = disabledImageChanges ? classes.inActiveUpload : classes.activeUpload;
+  const disabledInput = disabledSubmit ? classes.inActiveUpload : classes.activeUpload;
 
   return (
     <Formik
@@ -199,7 +195,7 @@ export const NewSubscription = () => {
                   className={classes.inputImage}
                   onChange={handleChange}
                   name='file'
-                  disabled={disabledImageChanges}
+                  disabled={disabledSubmit}
                 />
                 <div className={classes.text}>
                   {(file?.name && (
@@ -208,20 +204,19 @@ export const NewSubscription = () => {
                       <img src={preview} className={classes.image} alt='preview' />
                     </div>
                   )) ??
-                    (imageUrl ? (
+                    ((imageUrl && (
                       <div className={classes.imageContainer}>
                         {progress} <img src={preview} className={classes.image} alt='preview' />
                       </div>
-                    ) : (
-                      progress
-                    ))}
+                    )) ||
+                      progress)}
                 </div>
               </label>
               <button
                 type='button'
                 onClick={uploadImage}
                 className={classes.buttonUpload}
-                disabled={disabledImageChanges}
+                disabled={disabledSubmit}
               >
                 {uploadText}
               </button>
@@ -232,16 +227,22 @@ export const NewSubscription = () => {
               className={classes.buttonSubmit}
               disabled={disabledSubmit}
             >
-              {loading ? (
-                <div className={classes.loaderContainer}>
-                  Loading...
-                  <div className={classes.loader}></div>
-                </div>
-              ) : (
-                'Add new subscription'
-              )}
+              {error
+                ? 'Something went wrong, but we fix it'
+                : (loading && (
+                    <div className={classes.loaderContainer}>
+                      Loading...
+                      <div className={classes.loader}></div>
+                    </div>
+                  )) ||
+                  'Add new subscription'}
             </button>
-            <button type='reset' className={classes.clearButton} onClick={() => resetForm()}>
+            <button
+              type='reset'
+              className={classes.clearButton}
+              onClick={() => resetForm()}
+              disabled={disabledSubmit}
+            >
               <span>Clear all fields</span>
             </button>
             <NotificationAdd

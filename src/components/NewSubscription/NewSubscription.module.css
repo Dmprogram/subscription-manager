@@ -154,6 +154,10 @@
   cursor: pointer;
   background-color: #093169;
 }
+.buttonSubmit:disabled {
+  background-color: #4d4747;
+  cursor: not-allowed;
+}
 
 .error {
   margin: 0;
@@ -177,6 +181,10 @@
   background-color: #585757;
 }
 
+.clearButton:disabled {
+  background-color: #4d4747;
+  cursor: not-allowed;
+}
 .loaderContainer {
   display: flex;
   justify-content: center;

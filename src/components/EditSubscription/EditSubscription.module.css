@@ -145,16 +145,14 @@
   color: #f9f5f5;
 }
 
-.buttonSubmit:disabled {
-  background-color: #4d4747;
-  cursor: not-allowed;
-}
-
 .buttonSubmit:hover {
   cursor: pointer;
   background-color: #093169;
 }
-
+.buttonSubmit:disabled {
+  background-color: #4d4747;
+  cursor: not-allowed;
+}
 .error {
   margin: 0;
   color: rgb(223, 33, 33);

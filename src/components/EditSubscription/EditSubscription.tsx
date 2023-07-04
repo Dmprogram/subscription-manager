@@ -26,22 +26,23 @@ import { EditValues } from './types';
 export const EditSubscription = () => {
   const windowWidth = useRef(window.innerWidth);
   const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload';
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { subscriptionId } = useParams();
   const { fetchedSubscriptions, loading } = useAppSelector((state) => state.subscriptionsList);
 
   const [disabledSubmit, setDisabledSubmit] = useState(false);
-  const [disabledImageChanges, setDisabledImageIChanges] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState('Choose new image');
-  const [imageUrl, setImageUrl] = useState('');
+  const [newImageUrl, setNewImageUrl] = useState<null | string>(null);
   const [preview, setPreview] = useState('');
   const [subscriptionDelete, setSubscriptionDelete] = useState(false);
   const [subscriptionEdit, setSubscriptionEdit] = useState(false);
   const [deleteSubscription, setDeleteSubscription] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     dispatch(fetchSubscriptionsList());
@@ -61,6 +62,10 @@ export const EditSubscription = () => {
     }
   });
 
+  const handleClickDelete = () => {
+    setOpenAlert(true);
+  };
+
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     if (ev.target.files !== null) {
       setFile(ev.target.files[0]);
@@ -68,15 +73,13 @@ export const EditSubscription = () => {
   };
 
   const uploadImage = () => {
-    setDisabledImageIChanges(true);
     setDisabledSubmit(true);
     if (!file) {
-      setDisabledImageIChanges(false);
       setDisabledSubmit(false);
+      setNewImageUrl(null);
       setProgress('Image is missing');
       return;
     } else if (!validTypes.includes(file.type.split('/')[1])) {
-      setDisabledImageIChanges(false);
       setDisabledSubmit(false);
       setProgress('Invalid format');
       setFile(null);
@@ -94,21 +97,15 @@ export const EditSubscription = () => {
       },
       (error) => {
         console.log(error);
-        setDisabledImageIChanges(false);
-        setDisabledSubmit(false);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          setImageUrl(url);
+          setNewImageUrl(url);
           setProgress('Uploaded image');
           setDisabledSubmit(false);
         });
       }
     );
-  };
-
-  const handleClickDelete = () => {
-    setOpenAlert(true);
   };
 
   const handleDeleteSubscription = async () => {
@@ -142,23 +139,24 @@ export const EditSubscription = () => {
             date,
             currency,
             paymentFrequency,
-            imageUrl,
+            imageUrl: newImageUrl,
           },
           { merge: true }
         );
+        setLoadingEdit(false);
+        setSubscriptionEdit(true);
+        setTimeout(() => {
+          navigate('/active-subscriptions');
+        }, 1500);
       } catch (e) {
+        setError(true);
         console.error('Error edit subscription: ', e);
       }
-      setLoadingEdit(false);
-      setSubscriptionEdit(true);
-      setTimeout(() => {
-        navigate('/active-subscriptions');
-      }, 1500);
     }
   };
 
   const renderError = (message: string) => <p className={classes.error}>{message}</p>;
-  const disabledInput = disabledImageChanges ? classes.inActiveUpload : classes.activeUpload;
+  const disabledInput = disabledSubmit ? classes.inActiveUpload : classes.activeUpload;
 
   if (loading === 'pending') return <Spinner />;
   if (loading === 'failed') return <h2>Sorry, something went wrong, but we fix it</h2>;
@@ -238,29 +236,30 @@ export const EditSubscription = () => {
                     className={classes.inputImage}
                     onChange={handleChange}
                     name='file'
-                    disabled={disabledImageChanges}
+                    disabled={disabledSubmit}
                   />
                   <div className={classes.text}>
-                    {(file?.name && (
-                      <div className={classes.imageContainer}>
-                        <div>Preview</div>
-                        <img src={preview} className={classes.image} alt='preview' />
-                      </div>
-                    )) ??
-                      (imageUrl ? (
+                    <div className={classes.text}>
+                      {(file?.name && (
                         <div className={classes.imageContainer}>
-                          {progress} <img src={preview} className={classes.image} alt='preview' />
+                          <div>Preview</div>
+                          <img src={preview} className={classes.image} alt='preview' />
                         </div>
-                      ) : (
-                        progress
-                      ))}
+                      )) ??
+                        ((newImageUrl && (
+                          <div className={classes.imageContainer}>
+                            {progress} <img src={preview} className={classes.image} alt='preview' />
+                          </div>
+                        )) ||
+                          progress)}
+                    </div>
                   </div>
                 </label>
                 <button
                   type='button'
                   onClick={uploadImage}
                   className={classes.buttonUpload}
-                  disabled={disabledImageChanges}
+                  disabled={disabledSubmit}
                 >
                   {uploadText}
                 </button>
@@ -271,14 +270,15 @@ export const EditSubscription = () => {
                 className={classes.buttonSubmit}
                 disabled={disabledSubmit}
               >
-                {loadingEdit ? (
-                  <div className={classes.loaderContainer}>
-                    Loading...
-                    <div className={classes.loader}></div>
-                  </div>
-                ) : (
-                  'Edit Your Subscription'
-                )}
+                {error
+                  ? 'Something went wrong, but we fix it'
+                  : (loadingEdit && (
+                      <div className={classes.loaderContainer}>
+                        Loading...
+                        <div className={classes.loader}></div>
+                      </div>
+                    )) ||
+                    'Edit Your Subscription'}
               </button>
               <button
                 type='reset'
