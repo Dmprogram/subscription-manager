@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import classes from './App.module.css'
 import { ActiveSubscriptionsPage } from './components/Pages/ActiveSubscriptionsPage'
@@ -6,6 +6,7 @@ import { EditSubscriptionPage } from './components/Pages/EditSubscriptionPage'
 import { InactiveSubscriptionsPage } from './components/Pages/InactiveSubscriptionsPage'
 import { MainPage } from './components/Pages/MainPage'
 import { NewSubscriptionPage } from './components/Pages/NewSubscriptionPage'
+import { NotFoundPage } from './components/Pages/NotFoundPage'
 import { SignInPage } from './components/Pages/SignInPage'
 import { SignUppage } from './components/Pages/SignUpPage'
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
@@ -22,9 +23,8 @@ const App = () => (
           <Route path='/inactive-subscriptions' element={<InactiveSubscriptionsPage />} />
           <Route path='/new-subscription' element={<NewSubscriptionPage />} />
           <Route path='/edit-subscription/:subscriptionId' element={<EditSubscriptionPage />} />
-          <Route path='*' element={<Navigate to='/' replace />} />
+          <Route path='*' element={<NotFoundPage />} />
         </Route>
-        <Route path='*' element={<Navigate to='/login' replace />} />
       </Routes>
     </BrowserRouter>
   </div>

@@ -63,7 +63,6 @@ export const NewSubscription = () => {
         setLoading(false)
         setImageUrl('')
         setSubscriptionAdded(true)
-        setFile(null)
         setDisabledSubmit(false)
         setProgress('Choose an image')
         resetForm()

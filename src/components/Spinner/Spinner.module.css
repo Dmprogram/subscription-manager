@@ -8,10 +8,26 @@
   }
 }
 
-.spinner div {
-  top: 55px;
-  left: 55px;
+.container {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+  height: 500px;
+}
+
+.spinner {
+  transform-origin: 0 0;
+  transform: translateZ(0) scale(1);
+
+  padding-top: 53px;
+  padding-left: 53px;
+
+  backface-visibility: hidden;
+}
+
+.spinner div {
   box-sizing: content-box;
   width: 46px;
   height: 46px;
@@ -21,19 +37,4 @@
   border-radius: 50%;
 
   animation: spinner 0.7874s linear infinite;
-}
-
-.container {
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-
-  padding-top: 300px;
-  padding-left: 52px;
-}
-
-.spinner {
-  transform-origin: 0 0;
-  transform: translateZ(0) scale(1);
-  backface-visibility: hidden;
 }

@@ -4,7 +4,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 
 import classes from './EditSubscription.module.css'
 
@@ -168,8 +168,8 @@ export const EditSubscription = () => {
   const disabledInput = disabledSubmit ? classes.inActiveUpload : classes.activeUpload
 
   if (loading === 'pending') return <Spinner />
-
   const subscription = fetchedSubscriptions.find((el: Subscription) => el.id === subscriptionId)
+
   if (loading === 'succeeded' && subscription !== undefined) {
     return (
       <Formik
@@ -280,5 +280,15 @@ export const EditSubscription = () => {
       </Formik>
     )
   }
-  return <h2>Sorry, something went wrong, but we fix it</h2>
+
+  return (
+    <h2 className={classes.notFound}>
+      Sorry, but this subscription doesn&apos;t exist
+      <Link to='/active-subscriptions' className={classes.link}>
+        <button type='button' className={classes.notFoundButton}>
+          Go to Active Subscriptions
+        </button>
+      </Link>
+    </h2>
+  )
 }
