@@ -1,18 +1,15 @@
 // eslint-disable-next-line import/no-unresolved
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { useEffect } from 'react'
 
 import classes from './InactiveSubscriptions.module.css'
 
-import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks'
+import { useAppSelector } from '../../hooks/ReduxHooks'
 import { SelectSortType } from '../SelectSortType/SelectSortType'
-import { fetchSubscriptionsList } from '../store/subscriptionsListSlice'
 import { Subscription } from '../store/types'
 import { SubscriptionItem } from '../SubscriptionItem/SubscriptionItem'
 import { SubscriptionsSkeleton } from '../SubscriptionsSkeleton/SubscriptionsSkeleton'
 
 export const InactiveSubscriptions = () => {
-  const dispatch = useAppDispatch()
   const { inactiveSubscriptions, loading, inputSearch, searchSubsciptions } = useAppSelector(
     (state) => state.subscriptionsList,
   )
@@ -21,9 +18,6 @@ export const InactiveSubscriptions = () => {
     easing: 'ease-in-out',
     disrespectUserMotionPreference: false,
   })
-  useEffect(() => {
-    dispatch(fetchSubscriptionsList())
-  }, [dispatch])
 
   if (loading === 'pending')
     return (

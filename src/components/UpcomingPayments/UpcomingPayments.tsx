@@ -10,14 +10,16 @@ import { UpcomingPaymentsItem } from '../UpcomingPaymentsItem/UpcomingPaymentsIt
 import { UpcomingPaymentsSkeleton } from '../UpcomingPaymentsSkeleton/UpcomingPaymentsSkeleton'
 
 export const UpcomingPayments = () => {
+  const { upcomingPayments, loading } = useAppSelector((state) => state.subscriptionsList)
+
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(fetchSubscriptionsList())
+
     return () => {
       dispatch(clearAverageExpenses())
     }
   }, [dispatch])
-  const { upcomingPayments, loading } = useAppSelector((state) => state.subscriptionsList)
   if (loading === 'pending')
     return (
       <section className={classes.payments}>

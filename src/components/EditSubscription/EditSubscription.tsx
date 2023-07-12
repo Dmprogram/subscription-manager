@@ -49,7 +49,9 @@ export const EditSubscription = () => {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    dispatch(fetchSubscriptionsList())
+    if (fetchedSubscriptions.length === 0) {
+      dispatch(fetchSubscriptionsList())
+    }
   }, [fetchedSubscriptions.length, dispatch])
 
   useEffect(() => {
@@ -169,7 +171,6 @@ export const EditSubscription = () => {
 
   if (loading === 'pending') return <Spinner />
   const subscription = fetchedSubscriptions.find((el: Subscription) => el.id === subscriptionId)
-
   if (loading === 'succeeded' && subscription !== undefined) {
     return (
       <Formik
@@ -281,14 +282,17 @@ export const EditSubscription = () => {
     )
   }
 
-  return (
-    <h2 className={classes.notFound}>
-      Sorry, but this subscription doesn&apos;t exist
-      <Link to='/active-subscriptions' className={classes.link}>
-        <button type='button' className={classes.notFoundButton}>
-          Go to Active Subscriptions
-        </button>
-      </Link>
-    </h2>
-  )
+  if (subscription === undefined && loading !== 'idle') {
+    return (
+      <h2 className={classes.notFound}>
+        Sorry, but this subscription doesn&apos;t exist
+        <Link to='/active-subscriptions' className={classes.link}>
+          <button type='button' className={classes.notFoundButton}>
+            Go to Active Subscriptions
+          </button>
+        </Link>
+      </h2>
+    )
+  }
+  return null
 }
