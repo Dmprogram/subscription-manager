@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { SubscriptionsState } from './types'
+import { Subscription, SubscriptionsState } from './types'
 
 import { getSubscriptions } from '../services/requestSubscriptions'
 import { changeDate } from '../utils/changeDate'
@@ -33,11 +33,43 @@ const subscriptionsListSlice = createSlice({
   name: 'subscriptionsList',
   initialState,
   reducers: {
+    resetState: () => initialState,
+
     findSubscription(state, action: PayloadAction<{ inputSearch: string }>) {
       state.inputSearch = action.payload.inputSearch
       state.searchSubsciptions = state.fetchedSubscriptions.filter((el) =>
         el.name.toLowerCase().startsWith(action.payload.inputSearch.toLowerCase()),
       )
+    },
+
+    updateUpcomingPayments(state) {
+      state.upcomingPayments = sortPaymentsToOldest(state.activeSubscriptions, 3)
+      state.averageExpenses = countAverageExpenses(state.activeSubscriptions)
+    },
+
+    addSubscription(state, action: PayloadAction<{ newSubscription: Subscription }>) {
+      state.fetchedSubscriptions.push(action.payload.newSubscription)
+      state.activeSubscriptions.push(action.payload.newSubscription)
+    },
+
+    deleteSubscription(state, action: PayloadAction<{ subscriptionId: string }>) {
+      state.activeSubscriptions = state.activeSubscriptions.filter((el) => el.id !== action.payload.subscriptionId)
+
+      state.inactiveSubscriptions = state.inactiveSubscriptions.filter((el) => el.id !== action.payload.subscriptionId)
+    },
+    editSubscription(state, action: PayloadAction<{ editedSubscription: Subscription }>) {
+      const subscriptionActiveIndex = state.activeSubscriptions.findIndex(
+        (el) => el.id === action.payload.editedSubscription.id,
+      )
+      const subscriptionInactiveIndex = state.inactiveSubscriptions.findIndex(
+        (el) => el.id === action.payload.editedSubscription.id,
+      )
+      const subscriptionIndex = state.fetchedSubscriptions.findIndex(
+        (el) => el.id === action.payload.editedSubscription.id,
+      )
+      state.fetchedSubscriptions[subscriptionIndex] = action.payload.editedSubscription
+      state.activeSubscriptions[subscriptionActiveIndex] = action.payload.editedSubscription
+      state.inactiveSubscriptions[subscriptionInactiveIndex] = action.payload.editedSubscription
     },
 
     changeStatus(state, action: PayloadAction<{ status: boolean; id: string }>) {
@@ -117,6 +149,16 @@ const subscriptionsListSlice = createSlice({
   },
 })
 
-export const { findSubscription, clearSearchAndSortFields, addSortByParameter, changeStatus, clearAverageExpenses } =
-  subscriptionsListSlice.actions
+export const {
+  findSubscription,
+  clearSearchAndSortFields,
+  addSortByParameter,
+  changeStatus,
+  clearAverageExpenses,
+  addSubscription,
+  deleteSubscription,
+  editSubscription,
+  updateUpcomingPayments,
+  resetState,
+} = subscriptionsListSlice.actions
 export default subscriptionsListSlice.reducer

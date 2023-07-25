@@ -10,5 +10,5 @@ export type EditValues = {
   }
   status: boolean
   id: string
-  imageUrl: string
+  imageUrl: string | null
 }

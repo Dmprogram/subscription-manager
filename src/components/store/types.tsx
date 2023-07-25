@@ -15,7 +15,7 @@ export interface Subscription {
     year: number
   }
   status: boolean
-  imageUrl: string
+  imageUrl: string | null
   creationTime: number
 }
 

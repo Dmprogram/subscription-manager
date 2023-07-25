@@ -10,16 +10,18 @@ import { findSubscription, clearSearchAndSortFields, fetchSubscriptionsList } fr
 
 export const SearchSubscription = () => {
   const dispatch = useAppDispatch()
+  const { inputSearch, fetchedSubscriptions } = useAppSelector((state) => state.subscriptionsList)
 
   useEffect(() => {
-    dispatch(fetchSubscriptionsList())
+    if (fetchedSubscriptions.length === 0) {
+      dispatch(fetchSubscriptionsList())
+    }
 
     return () => {
       dispatch(clearSearchAndSortFields())
     }
-  }, [dispatch])
+  }, [dispatch, fetchedSubscriptions.length])
 
-  const { inputSearch } = useAppSelector((state) => state.subscriptionsList)
   return (
     <div className={classes.searchField}>
       <label htmlFor='search' className={classes.searchTitle}>

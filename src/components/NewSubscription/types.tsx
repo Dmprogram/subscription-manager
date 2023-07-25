@@ -7,5 +7,5 @@ export interface NewSubscriptionValues {
   status: null
   imageUrl: null
   creationTime: null
-  id?: string
+  id: string
 }

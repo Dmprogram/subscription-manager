@@ -1,8 +1,8 @@
 import { collection, addDoc } from 'firebase/firestore'
 
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
-
 import { Formik, Form, Field, ErrorMessage } from 'formik'
+
 import React, { useState, useEffect, useRef } from 'react'
 
 import classes from './NewSubscription.module.css'
@@ -11,9 +11,11 @@ import { NewSubscriptionValues } from './types'
 
 import { db, auth, storage } from '../../firebase'
 
+import { useAppDispatch } from '../../hooks/ReduxHooks'
 import { DatePick } from '../DatePicker/DatePicker'
 
 import { NotificationAdd } from '../Notifications/NotificationAdd'
+import { addSubscription } from '../store/subscriptionsListSlice'
 import {
   validationSubscriptionSchema,
   currenciesOptions,
@@ -22,6 +24,7 @@ import {
 import { validTypes } from '../utils/validTypesImages'
 
 export const NewSubscription = () => {
+  const dispatch = useAppDispatch()
   const windowWidth = useRef(window.innerWidth)
   const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload'
 
@@ -49,17 +52,21 @@ export const NewSubscription = () => {
     if (user && values.date) {
       const { name, price, currency, paymentFrequency, date } = values
       const creationTime = new Date().getTime()
+      const newSubscription = {
+        name,
+        price: parseFloat(price as string),
+        date,
+        currency,
+        paymentFrequency,
+        creationTime,
+        imageUrl,
+        status: true,
+        id: '',
+      }
       try {
-        await addDoc(collection(db, 'users', user.uid, 'subscriptions'), {
-          name,
-          price: parseFloat(price as string),
-          date,
-          currency,
-          paymentFrequency,
-          creationTime,
-          imageUrl,
-          status: true,
-        })
+        const docRef = await addDoc(collection(db, 'users', user.uid, 'subscriptions'), newSubscription)
+        newSubscription.id = docRef.id
+        dispatch(addSubscription({ newSubscription }))
         setLoading(false)
         setImageUrl('')
         setSubscriptionAdded(true)

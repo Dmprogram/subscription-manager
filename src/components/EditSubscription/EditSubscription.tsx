@@ -18,7 +18,8 @@ import { DatePick } from '../DatePicker/DatePicker'
 import { NotificationDelete } from '../Notifications/NotificationDelete'
 import { NotificationEdit } from '../Notifications/NotificationEdit'
 import { Spinner } from '../Spinner/Spinner'
-import { fetchSubscriptionsList } from '../store/subscriptionsListSlice'
+import { deleteSubscription, fetchSubscriptionsList, editSubscription } from '../store/subscriptionsListSlice'
+
 import { Subscription } from '../store/types'
 import {
   validationSubscriptionSchema,
@@ -28,9 +29,6 @@ import {
 import { validTypes } from '../utils/validTypesImages'
 
 export const EditSubscription = () => {
-  const windowWidth = useRef(window.innerWidth)
-  const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload'
-
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { subscriptionId } = useParams()
@@ -43,7 +41,7 @@ export const EditSubscription = () => {
   const [preview, setPreview] = useState('')
   const [subscriptionDelete, setSubscriptionDelete] = useState(false)
   const [subscriptionEdit, setSubscriptionEdit] = useState(false)
-  const [deleteSubscription, setDeleteSubscription] = useState(false)
+  const [deleteSubscriptionBoolean, setDeleteSubscription] = useState(false)
   const [openAlert, setOpenAlert] = useState(false)
   const [loadingEdit, setLoadingEdit] = useState(false)
   const [error, setError] = useState(false)
@@ -119,6 +117,7 @@ export const EditSubscription = () => {
     if (user && subscriptionId) {
       try {
         await deleteDoc(doc(db, 'users', user.uid, 'subscriptions', subscriptionId))
+        dispatch(deleteSubscription({ subscriptionId }))
         setSubscriptionDelete(true)
         setTimeout(() => {
           navigate('/active-subscriptions')
@@ -130,30 +129,32 @@ export const EditSubscription = () => {
   }
 
   useEffect(() => {
-    if (deleteSubscription) {
+    if (deleteSubscriptionBoolean) {
       handleDeleteSubscription()
     }
   })
+  const subscription = fetchedSubscriptions.find((el: Subscription) => el.id === subscriptionId)
 
   const handleSubmit = async (values: EditValues) => {
     setLoadingEdit(true)
     setDisabledSubmit(true)
     const user = auth.currentUser
-    if (user && values.date) {
+    if (user && values.date && subscription) {
       const { name, price, currency, paymentFrequency, date, id } = values
+      const editedSubscription = {
+        name,
+        price: parseFloat(price as string),
+        date,
+        currency,
+        paymentFrequency,
+        imageUrl: newImageUrl,
+        id: subscription.id,
+        creationTime: subscription.creationTime,
+        status: subscription.status,
+      }
       try {
-        await setDoc(
-          doc(db, 'users', user.uid, 'subscriptions', id),
-          {
-            name,
-            price: parseFloat(price as string),
-            date,
-            currency,
-            paymentFrequency,
-            imageUrl: newImageUrl,
-          },
-          { merge: true },
-        )
+        await setDoc(doc(db, 'users', user.uid, 'subscriptions', id), editedSubscription)
+        dispatch(editSubscription({ editedSubscription }))
         setLoadingEdit(false)
         setSubscriptionEdit(true)
         setTimeout(() => {
@@ -165,12 +166,11 @@ export const EditSubscription = () => {
       }
     }
   }
-
+  const windowWidth = useRef(window.innerWidth)
+  const uploadText = windowWidth.current < 568 ? 'Upload' : 'Click to Upload'
   const renderError = (message: string) => <p className={classes.error}>{message}</p>
   const disabledInput = disabledSubmit ? classes.inActiveUpload : classes.activeUpload
-
   if (loading === 'pending') return <Spinner />
-  const subscription = fetchedSubscriptions.find((el: Subscription) => el.id === subscriptionId)
   if (loading === 'succeeded' && subscription !== undefined) {
     return (
       <Formik

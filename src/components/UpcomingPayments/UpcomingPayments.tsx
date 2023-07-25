@@ -3,23 +3,25 @@ import { useEffect } from 'react'
 import classes from './UpcomingPayments.module.css'
 
 import { useAppSelector, useAppDispatch } from '../../hooks/ReduxHooks'
-import { fetchSubscriptionsList, clearAverageExpenses } from '../store/subscriptionsListSlice'
+import { fetchSubscriptionsList, updateUpcomingPayments } from '../store/subscriptionsListSlice'
 
 import { Subscription } from '../store/types'
 import { UpcomingPaymentsItem } from '../UpcomingPaymentsItem/UpcomingPaymentsItem'
 import { UpcomingPaymentsSkeleton } from '../UpcomingPaymentsSkeleton/UpcomingPaymentsSkeleton'
 
 export const UpcomingPayments = () => {
-  const { upcomingPayments, loading } = useAppSelector((state) => state.subscriptionsList)
-
+  const { upcomingPayments, loading, fetchedSubscriptions, activeSubscriptions } = useAppSelector(
+    (state) => state.subscriptionsList,
+  )
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(fetchSubscriptionsList())
-
-    return () => {
-      dispatch(clearAverageExpenses())
+    if (fetchedSubscriptions.length === 0) {
+      dispatch(fetchSubscriptionsList())
     }
-  }, [dispatch])
+  }, [fetchedSubscriptions.length, dispatch])
+  useEffect(() => {
+    dispatch(updateUpcomingPayments())
+  }, [activeSubscriptions.length, dispatch])
   if (loading === 'pending')
     return (
       <section className={classes.payments}>

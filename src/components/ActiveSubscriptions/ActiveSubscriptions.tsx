@@ -19,7 +19,6 @@ export const ActiveSubscriptions = () => {
     easing: 'ease-in-out',
     disrespectUserMotionPreference: false,
   })
-
   if (loading === 'pending')
     return (
       <section className={classes.payments}>
