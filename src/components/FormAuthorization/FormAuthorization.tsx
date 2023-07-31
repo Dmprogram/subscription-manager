@@ -3,7 +3,7 @@ import React, { useLayoutEffect, useRef } from 'react'
 
 import classes from './FormAuthorization.module.css'
 
-import { validationRegister } from '../utils/validationRegister'
+import { validationRegister, validationSignIn } from '../utils/validationRegister'
 
 interface FormAuthorizationProps {
   submitTitle: string
@@ -41,7 +41,7 @@ export const FormAuthorization: React.FC<FormAuthorizationProps> = ({
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationRegister}
+      validationSchema={submitTitle === 'Sign In' ? validationSignIn : validationRegister}
       onSubmit={(values, { setFieldValue }) => {
         handleSubmit(values, setFieldValue)
       }}

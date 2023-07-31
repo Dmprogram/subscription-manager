@@ -7,8 +7,6 @@ import './index.css'
 import 'normalize.css'
 import { store } from './components/store/index'
 
-import './firebase'
-
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>

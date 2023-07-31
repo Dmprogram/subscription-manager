@@ -13,3 +13,7 @@ export const validationRegister = Yup.object({
     .minSymbols(0)
     .required('Please enter a password'),
 })
+export const validationSignIn = Yup.object({
+  email: Yup.string().email('Invalid email').required('Please enter an email'),
+  password: Yup.string().minSymbols(0).required('Please enter a password'),
+})
