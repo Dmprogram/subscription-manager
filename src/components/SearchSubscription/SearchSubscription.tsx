@@ -16,11 +16,14 @@ export const SearchSubscription = () => {
     if (fetchedSubscriptions.length === 0) {
       dispatch(fetchSubscriptionsList())
     }
-
-    return () => {
-      dispatch(clearSearchAndSortFields())
-    }
   }, [dispatch, fetchedSubscriptions.length])
+
+  useEffect(
+    () => () => {
+      dispatch(clearSearchAndSortFields())
+    },
+    [dispatch],
+  )
 
   return (
     <div className={classes.searchField}>
