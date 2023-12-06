@@ -14,15 +14,15 @@
   align-items: center;
   justify-content: center;
 
-  height: 500px;
+  height: 100%;
 }
 
 .spinner {
   transform-origin: 0 0;
   transform: translateZ(0) scale(1);
 
-  padding-top: 53px;
-  padding-left: 53px;
+  padding-top: 54px;
+  padding-left: 54px;
 
   backface-visibility: hidden;
 }
