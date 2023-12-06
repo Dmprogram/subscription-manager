@@ -1,10 +1,18 @@
 .container {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.formContainer {
+  display: flex;
   flex-flow: column nowrap;
   align-items: center;
+  justify-content: center;
 
+  width: 100%;
   max-width: 628px;
-  margin: 60px auto;
   padding: 40px;
 
   background-color: #2b2c2e;
@@ -28,7 +36,7 @@
 }
 
 .field {
-  margin: 10px 0 20px;
+  margin: 10px 0 25px;
 }
 
 .label {
@@ -78,7 +86,9 @@
 }
 
 .link {
-  color: #096bde;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #117bf3;
   text-decoration: none;
 }
 
@@ -89,12 +99,13 @@
 .error {
   position: absolute;
   left: 5px;
+  font-size: 0.9rem;
   color: rgb(223 33 33);
 }
 
 @media (device-width >= 320px) and (device-width <= 568px) {
-  .container {
-    margin: 40px 10px;
+  .formContainer {
+    margin: 0 10px;
     padding: 20px 15px;
   }
 
@@ -111,6 +122,10 @@
     font-size: 1rem;
   }
 
+  .error {
+    font-size: 0.8rem;
+  }
+
   .inputSubmit {
     margin-top: 10px;
   }
@@ -118,10 +133,14 @@
 
 @media (device-width >= 320px) and (device-width <= 360px) {
   .header {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
   }
 
   .description {
+    font-size: 0.85rem;
+  }
+
+  .error {
     font-size: 0.8rem;
   }
 
