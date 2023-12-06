@@ -23,6 +23,7 @@
 }
 
 .form {
+  position: relative;
   width: 100%;
 }
 
@@ -86,19 +87,8 @@
 }
 
 .error {
-  display: flex;
-  justify-content: flex-start;
-  margin-left: 5px;
-  color: rgb(223 33 33);
-}
-
-.authError {
-  display: flex;
-  justify-content: center;
-
-  margin-left: 5px;
-
-  font-size: 1.2rem;
+  position: absolute;
+  left: 5px;
   color: rgb(223 33 33);
 }
 

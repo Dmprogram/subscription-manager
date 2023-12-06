@@ -23,13 +23,9 @@ export const FormAuthorization: React.FC<FormAuthorizationProps> = ({
   setAuthError,
 }) => {
   const emailRef = useRef<HTMLInputElement>(null)
-  const passwordRef = useRef<HTMLInputElement>(null)
   useLayoutEffect(() => {
     if (emailRef.current && authError !== false) {
       emailRef.current.focus()
-    }
-    if (passwordRef.current && authError === 'Wrong password') {
-      passwordRef.current.focus()
     }
   }, [authError])
 
@@ -54,14 +50,17 @@ export const FormAuthorization: React.FC<FormAuthorizationProps> = ({
             </label>
             <Field
               className={classes.input}
-              type='tel'
+              type='email'
               name='email'
               id='email'
               placeholder='john@example.com'
               innerRef={emailRef}
-              onFocus={(ev: React.ChangeEvent<HTMLInputElement>) =>
-                ev.target.setSelectionRange(ev.target.value.length, ev.target.value.length)
-              }
+              onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                setFieldValue('email', ev.target.value, true)
+                if (authError) {
+                  setAuthError(false)
+                }
+              }}
             />
             <ErrorMessage name='email' render={renderError} />
           </div>
@@ -75,7 +74,6 @@ export const FormAuthorization: React.FC<FormAuthorizationProps> = ({
               name='password'
               id='password'
               placeholder='********'
-              innerRef={passwordRef}
               value={values.password}
               onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
                 setFieldValue('password', ev.target.value, true)

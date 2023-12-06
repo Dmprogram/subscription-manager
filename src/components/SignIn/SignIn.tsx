@@ -9,10 +9,11 @@ export const SignIn = () => {
   const [authError, setAuthError] = useState<string | null | boolean>(null)
 
   const navigate = useNavigate()
-  const handleLogin = (
-    values: { email: string; password: string },
-    setFieldValue: (field: string, value: string, shouldValidate: boolean) => void,
-  ) => {
+  const handleLogin = (values: { email: string; password: string }) => {
+    if (authError) {
+      setAuthError('Please check e-mail or password')
+      return
+    }
     const { email, password } = values
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
@@ -20,17 +21,11 @@ export const SignIn = () => {
       })
       .catch((error) => {
         console.log(error.code)
-        if (error.code === 'auth/user-not-found') {
-          setAuthError('User not found')
-          setFieldValue('password', '', true)
-        }
-        if (error.code === 'auth/wrong-password') {
-          setAuthError('Wrong password')
-          setFieldValue('password', '', true)
+        if (error.code === 'auth/invalid-login-credentials') {
+          setAuthError('Incorrect email or password')
         }
         if (error.code === 'auth/too-many-requests') {
           setAuthError('Please try later, too many attempts')
-          setFieldValue('password', '', true)
         }
       })
   }

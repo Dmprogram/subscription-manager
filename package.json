@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "host": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint src --ext js,jsx,ts,tsx && tsc --noemit",
     "lint:fix": "eslint --fix src --ext js,jsx,ts,tsx",
